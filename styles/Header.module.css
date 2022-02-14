@@ -1,0 +1,36 @@
+.Header {
+    color: #ffaf02 !important;
+}
+
+.About {
+    color: #ffaf02 !important;
+}
+
+.About:hover {
+    color: rgb(157, 199, 5) !important;
+}
+
+.MySwaps {
+    color: #ffaf02 !important;
+}
+
+.MySwaps:hover {
+    color: rgb(157, 199, 5) !important;
+}
+
+.Brand {
+    color:#ffffff !important;
+    margin-left: 33%
+    ;
+}
+
+.ConnectWallet {
+    border-radius: 15px;
+    max-width: 145px;
+    min-width: 145px;
+    
+}
+
+.ConnectWallet:hover {
+    color: rgb(0, 218, 29) !important;
+}

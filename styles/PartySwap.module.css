@@ -1,0 +1,8 @@
+
+.PartySwapPage {
+    /*background-color: rgb(146, 0, 146);*/
+    background-image: linear-gradient(purple,orange);
+    max-height: 100vh;
+    min-height: 100vh;
+    overflow-x: hidden;
+}

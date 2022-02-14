@@ -1,0 +1,32 @@
+.MySwapsContainer {
+    margin-top: 20px
+
+}
+
+.MySwapsHeader {
+    color: white;
+    font-weight: 500;
+}
+
+.MySwapsTable {
+    table-layout: auto !important;
+    border-color: rgb(228, 200, 42);
+}
+
+.MySwapsCard {
+    background-color: rgb(255, 255, 255);
+}
+
+.MyPagination {
+    display: flex;
+    justify-content: right;
+    background-color: transparent !important;
+}
+
+.CounterPartyAddress {
+    color: rgb(0, 45, 128);
+}
+
+.div {
+    justify-content: left;
+}
