@@ -5,7 +5,7 @@ import "hardhat/console.sol";
 import "./Token.sol";
 
 
-contract P2pSwap {
+contract PartySwap {
     enum token_type {
         no_eth,
         from_eth,

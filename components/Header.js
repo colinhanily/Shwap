@@ -4,15 +4,8 @@ import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
-import P2pSwap from '../artifacts/contracts/p2pswap.sol/P2pSwap.json';
 import { connectWalletHandler } from '../components/utils';
 import { Container } from 'react-bootstrap';
-
-const classes = 'm-auto Nav'
-const contractAddress = "0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9";
-const abi = P2pSwap.abi;
-var walletConnected = true;
-
 
 const Header = () => {    
     const [connectButton, setConnectButton] = useState("Connect Wallet");

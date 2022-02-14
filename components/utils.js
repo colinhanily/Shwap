@@ -1,5 +1,5 @@
 import Web3 from 'web3';
-import P2pSwap from '../artifacts/contracts/p2pswap.sol/P2pSwap.json';
+import PartySwap from '../artifacts/contracts/PartySwap.sol/PartySwap.json';
 import ERC20 from '../artifacts/contracts/Dai.sol/Dai.json';
 const { ethers }  = require('ethers');
 
@@ -7,26 +7,13 @@ const getWeb3 = () => {
     return new Web3('http://localhost:8545')
 };
 
-const getEthersERC20 = async (tokenAddr) => {
-    try {
-        let tokenAddress = tokenAddr.toString().trim();
-
-        const provider = new ethers.providers.JsonRpcProvider("http://localhost:8545")
-        const tokenContract =  new ethers.Contract(tokenAddress, ERC20.abi, provider);
-        
-        return tokenContract;
-    } catch (e) {
-        console.log(e)
-        return false;
-    }
-
-}
-
 const getPartySwap = async () => {
     const web3 = getWeb3();
+    console.log(PartySwap.abi)
+    console.log(PartySwap.address)
     return new web3.eth.Contract(
-        P2pSwap.abi,
-        P2pSwap.address
+        PartySwap.abi,
+        PartySwap.address
     )
 }; 
 
@@ -75,7 +62,7 @@ const approveToken = async (currentAccount, address) => {
         try {
             if (await checkTokenIsApproved(currentAccount, address) == false) {
                 let tokenContract = await getERC20(address);
-                let approval = await tokenContract.methods.approve(P2pSwap.address, "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff").send({from: currentAccount});
+                let approval = await tokenContract.methods.approve(PartySwap.address, "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff").send({from: currentAccount});
                 return true;
             }
             return false;
@@ -92,7 +79,7 @@ const checkTokenIsApproved = async (currentAccount, fromToken) => {
             if (token == "0x0000000000000000000000000000000000000000")
                 return true
             let tokenContract = await getERC20(fromToken);
-            let isApproved = await tokenContract.methods.allowance(P2pSwap.address, currentAccount).call();
+            let isApproved = await tokenContract.methods.allowance(PartySwap.address, currentAccount).call();
             if (isApproved > 100000) {
                 console.log(isApproved)
                 return true

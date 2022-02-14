@@ -18,16 +18,8 @@ export default function PartySwap() {
     console.log(swapCreated)
     const init = async () => {
       const web3 = getWeb3();
-      //const accounts = await web3.eth.getAccounts();
       let account = await connectWalletHandler();
       const partySwap = await getPartySwap();
-      const current_swap_id = await partySwap.methods.current_swap_id().call();
-    
-      const isERC20 = isToken("0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512");
-
-      const token = await getERC20("0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512");
-
-
       let swaps = await getUserSwaps(account);
 
       if (swaps.length > 0)
