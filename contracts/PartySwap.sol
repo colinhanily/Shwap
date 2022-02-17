@@ -79,7 +79,7 @@ contract PartySwap {
         require(swaps_list[swap_id].from_deposited == false, "Party already deposited");
         
         if (swaps_list[swap_id].is_eth == uint256(token_type.from_eth)) {
-            require(msg.value == swaps_list[swap_id].from_amount);
+            require(msg.value == swaps_list[swap_id].from_amount, "Incorrect Amount");
         } else {
             Token token = Token(swaps_list[swap_id].from_token);
             token.transferFrom(msg.sender, address(this), swaps_list[swap_id].from_amount);       
@@ -92,7 +92,7 @@ contract PartySwap {
         require(swaps_list[swap_id].to_deposited == false, "Party already deposited");
 
         if (swaps_list[swap_id].is_eth == uint256(token_type.to_eth)) {
-            require(msg.value == swaps_list[swap_id].to_amount);
+            require(msg.value == swaps_list[swap_id].to_amount, "Incorrect Amount");
         } else {
             Token token = Token(swaps_list[swap_id].to_token);
             token.transferFrom(msg.sender, address(this), swaps_list[swap_id].to_amount);         

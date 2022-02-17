@@ -9,11 +9,16 @@ import { Row, Col } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { InputGroup } from 'react-bootstrap';
-
 import { connectWalletHandler, isToken, isValidAddress, createSwap, approveToken, checkTokenIsApproved} from '../components/utils';
 
-const CreateSwapForm = () => {   
+const Web3 = require('web3');
+const web3 = new Web3('http://localhost:9545');
 
+
+
+const CreateSwapForm = () => {   
+    const [validFromToken, setValidFromToken] = useState(false);
+    const [validToToken, setValidToToken] = useState(false);
     const [currentAccount, setCurrentAccount] = useState(' ');
     const [approveButtonLoading, setApproveButtonLoading] = useState(false);
     const [createButtonLoading, setCreateButtonLoading] = useState(false);
@@ -24,7 +29,7 @@ const CreateSwapForm = () => {
     const [fromAmount, setFromAmount] = useState(' ');
     const [toAmount, setToAmount] = useState(' ');
     const [counterPartyAddress, setCounterPartyAddress] = useState(' ');
-    const [sendOnCreate, setSendOnCreate] = useState(0);
+    const [sendOnCreate, setSendOnCreate] = useState(false);
     const [canCreateSwap, setCreateSwap] = useState(true);
     const [canClickApprove, setApproveButton] = useState(true);
     const [tokenApproved, isApproved] = useState(false);
@@ -33,16 +38,17 @@ const CreateSwapForm = () => {
     const [fromTokenCorrect, isFromTokenCorrect] = useState(false);
     const [toTokenCorrect, isToTokenCorrect] = useState(false);
 
-    const enableCreateSwap = async (_fromToken, _toToken, _fromAmount, _toAmount, _counterPartyAddress, _tokenApproved) => {
-        if (_fromToken == ' '  ||
-            _toToken == ' '    ||
-            _fromAmount == ' ' ||
-            _fromAmount == 0   ||
-            _toAmount == ' '   ||
-            _toAmount == 0     ||
+    const enableCreateSwap = async (_fromTokenAddress, _toTokenAddress, _validFromToken, _validToToken, _fromAmount,
+                                    _toAmount, _counterPartyAddress, _tokenApproved) => {
+        if (_validFromToken == false    ||
+            _validToToken == false      ||
+            _fromAmount == ' '          ||
+            _fromAmount == 0            ||
+            _toAmount == ' '            ||
+            _toAmount == 0              ||
             _counterPartyAddress == ' ' ||
-            _tokenApproved == false ||
-            _fromToken == _toToken) {
+            _tokenApproved == false     ||
+            _fromTokenAddress == _toTokenAddress) {
             setCreateSwap(true)
         } else {
             setCreateSwap(false);
@@ -50,6 +56,9 @@ const CreateSwapForm = () => {
     }
         
     const checkFromToken = async (tokenAddress) => {
+        tokenAddress = tokenAddress.trim();
+        let approved = tokenApproved;
+
         setFromTokenImage(false)
         setFromToken(tokenAddress);
         setFromTokenAddress('');
@@ -62,21 +71,40 @@ const CreateSwapForm = () => {
         if (isValidAddress(tokenAddress) === true) {
             if (await isToken(tokenAddress) === true) {
                 setFromTokenAddress(tokenAddress);
-                setApproveButton(false)
-                isFromTokenCorrect("success")
+                setValidFromToken(true);
+                if (tokenAddress == toTokenAddress) {
+                    isFromTokenCorrect("danger")
+                } else {
+                    isFromTokenCorrect("success")
+                }
+                approved = await (checkTokenIsApproved(currentAccount, tokenAddress));
+                if (approved === true ) {
+                    setApproveButton(true);
+                    isApproved(true);
+                } else {
+                    setApproveButton(false)
+                }
             } else {
-                setFromToken(' ');
+                setValidFromToken(false);
                 setApproveButton(false);
+                isFromTokenCorrect("danger")
+                setApproveButton(true);
+                isApproved(false);
             }
         } else {
+            if (validToToken) {
+                isToTokenCorrect("success")
+            }
             isFromTokenCorrect(false)
             isApproved(false);
             setApproveButton(true);
         }
-        enableCreateSwap(tokenAddress, toTokenAddress, fromAmount, toAmount, counterPartyAddress, canClickApprove)
+        enableCreateSwap(tokenAddress, toTokenAddress, true, validToToken, fromAmount, toAmount, counterPartyAddress, approved)
     }
 
     const checkToToken = async (tokenAddress) => {
+        tokenAddress = tokenAddress.trim();
+    
         setToTokenImage(false)
         setToToken(tokenAddress);
         setToTokenAddress('');
@@ -89,24 +117,33 @@ const CreateSwapForm = () => {
         if (isValidAddress(tokenAddress) === true) {
             if (await isToken(tokenAddress) === true) {
                 setToTokenAddress(tokenAddress);
-                isToTokenCorrect("success")
+                setValidToToken(true);
+                if (tokenAddress == fromTokenAddress) {
+                    isToTokenCorrect("danger")
+                } else {
+                    isToTokenCorrect("success")
+                }                
             } else {
-                setToToken(' ');
+                setValidToToken(false);
+                isToTokenCorrect("danger")
             }
         } else {
+            if (validFromToken)
+                isFromTokenCorrect("success")
             isToTokenCorrect(false)
         }
 
-        enableCreateSwap(fromTokenAddress, tokenAddress, fromAmount, toAmount, counterPartyAddress, tokenApproved)
+        enableCreateSwap(fromTokenAddress, tokenAddress, validFromToken, true, fromAmount, toAmount, counterPartyAddress, tokenApproved)
     }
 
     const checkCounterPartyAddress = async (address) => {
+        address = address.trim();
         if (isValidAddress(address) == true) {
             if (counterPartyAddress == currentAccount)
                 setCounterPartyAddress(false) 
             else {
                 setCounterPartyAddress(address);
-                enableCreateSwap(fromTokenAddress, toTokenAddress, fromAmount, toAmount, address, tokenApproved)
+                enableCreateSwap(fromTokenAddress, toTokenAddress, validFromToken, validToToken, fromAmount, toAmount, address, tokenApproved)
             }
         } else {
             setCounterPartyAddress(false);
@@ -119,10 +156,11 @@ const CreateSwapForm = () => {
             setFromAmount(' ');
             amount = ' ';
         } else {
-            setFromAmount(parseInt(amount, 10));
+            let amountInWei = web3.utils.toWei(amount.toString(), 'ether')
+            setFromAmount(amount);
         }
 
-        enableCreateSwap(fromTokenAddress, toTokenAddress, amount, toAmount, counterPartyAddress, tokenApproved)
+        enableCreateSwap(fromTokenAddress, toTokenAddress, validFromToken, validToToken, amount, toAmount, counterPartyAddress, tokenApproved)
     }
 
     const checkToAmount = (amount) => {
@@ -130,60 +168,42 @@ const CreateSwapForm = () => {
             setToAmount(' ');
             amount = ' ';
         } else {
-            setToAmount(parseInt(amount, 10));
+            setToAmount(amount);
         }
 
-        enableCreateSwap(fromTokenAddress, toTokenAddress, fromAmount, amount, counterPartyAddress, tokenApproved)
-    }
-
-    const checkSendOnCreate = (checkbox) => {
-        if (checkbox = "on")
-            setSendOnCreate(1)
-        else
-            setSendOnCreate(0);
+        enableCreateSwap(fromTokenAddress, toTokenAddress, validFromToken, validToToken, fromAmount, amount, counterPartyAddress, tokenApproved)
     }
 
     const approval = async (id) => {
 
         setApproveButtonLoading(true)
         const approval = await approveToken(currentAccount, fromTokenAddress);
-        setApproveButtonLoading(false)
+         
         if (approval === true) {
             setApproveButton(true);   
         }
 
-        enableCreateSwap(fromTokenAddress, toTokenAddress, fromAmount, toAmount, counterPartyAddress, true);
+        enableCreateSwap(fromTokenAddress, toTokenAddress, validFromToken, validToToken, fromAmount, toAmount, counterPartyAddress, true);
     }
-    
-    const isTokenApproved = async () => {
-        const approved = await checkTokenIsApproved(currentAccount, fromToken)
-
-        isApproved(true);
-        enableCreateSwap(fromTokenAddress, toTokenAddress, fromAmount, toAmount, counterPartyAddress, canApproveToken)
-    }
-
 
     const create = async () => {
         var isEth = 0;
 
-        ///////////REMOVE AFTER TESTING
-        fromToken = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512';
-
-        if (fromToken == '0x0000000000000000000000000000000000000000')
+        if (fromTokenAddress == '0x0000000000000000000000000000000000000000')
             isEth = 1;
-        else if (toToken == '0x0000000000000000000000000000000000000000')
+        else if (toTokenAddress == '0x0000000000000000000000000000000000000000')
             isEth = 2
-
+        
         setCreateButtonLoading(true)
-        let created = await createSwap(currentAccount, counterPartyAddress, fromToken, toToken, fromAmount, toAmount, isEth, sendOnCreate);
-        if (created == true) {
-            window.location.reload(true);
-        }
+        let created = await createSwap(currentAccount, counterPartyAddress, fromTokenAddress, toTokenAddress, fromAmount, toAmount, isEth, sendOnCreate);
+        //if (created == true) {
+            //window.location.reload(true);
+        //} else if (created == false) {
+            //setCreateButtonLoading(false)
+        //}
     }
 
     async function grabFromDropDownToken(token, tokenImage, tokenAddress) {
-        setApproveButton(true)
-        isApproved(false)
         if (tokenAddress == toTokenAddress) {
             setFromTokenAddress(' ');
             isFromTokenCorrect("danger");
@@ -193,9 +213,9 @@ const CreateSwapForm = () => {
         }
         setFromToken(token);
         setFromTokenImage(tokenImage);
+        setValidFromToken(true);
+
         const approved = await checkTokenIsApproved(currentAccount, tokenAddress)
-
-
         if (approved === true || tokenAddress == "0x0000000000000000000000000000000000000000" ) {
             isApproved(true);
             setApproveButton(true);
@@ -206,8 +226,7 @@ const CreateSwapForm = () => {
             approved = false;
         }
 
-        enableCreateSwap(tokenAddress, toTokenAddress, fromAmount, toAmount, counterPartyAddress, approved)
-
+        enableCreateSwap(fromTokenAddress, toTokenAddress, true, validToToken, fromAmount, toAmount, counterPartyAddress, approved)
     }
 
     function grabToDropDownToken(token, tokenImage, tokenAddress) {
@@ -218,11 +237,12 @@ const CreateSwapForm = () => {
             setToTokenAddress(tokenAddress);
             isToTokenCorrect("success")
         }
-
+        
         setToToken(token);
         setToTokenImage(tokenImage);
+        setValidToToken(true);
 
-        enableCreateSwap(fromTokenAddress, tokenAddress, fromAmount, toAmount, counterPartyAddress, canClickApprove)
+        enableCreateSwap(fromTokenAddress, tokenAddress, validFromToken, true, fromAmount, toAmount, counterPartyAddress, tokenApproved)
     }
 
 // forwardRef again here!
@@ -266,7 +286,7 @@ const CustomMenu = React.forwardRef(
 
     return (
         <Container className={styles.FormContainer}>
-            <h2 className={styles.CounterLabel}>Total Swapped Value</h2>
+            <h1 className={styles.CounterLabel}>Total Swapped Value</h1>
             <h2 className={styles.CounterValue}>$0</h2>
             <Form>
                 <Form.Group className="mb-4">
@@ -333,7 +353,7 @@ const CustomMenu = React.forwardRef(
                 <Form.Group>
                     <Form.Label className={styles.CheckBoxLabel}>Deposit Your Side of the Trade on Swap Creation (Saves Gas!)</Form.Label>
                     <Col>
-                        <Form.Check className={styles.FormCheckbox} onChange={e => checkSendOnCreate(e.target.value)}/>
+                        <Form.Check className={styles.FormCheckbox} onChange={(e) => setSendOnCreate(e.target.checked)}/>
                     </Col>
                 </Form.Group>
             </Form>

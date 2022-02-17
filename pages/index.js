@@ -20,13 +20,13 @@ export default function PartySwap() {
       const web3 = getWeb3();
       let account = await connectWalletHandler();
       const partySwap = await getPartySwap();
+      let swapId = await partySwap.methods.current_swap_id();
       let swaps = await getUserSwaps(account);
 
       if (swaps.length > 0)
         setSwapsPresent(true)
       else
         setSwapsPresent(false)
-
 
       walletChanges();
       
@@ -37,7 +37,6 @@ export default function PartySwap() {
     };
     init();
   }, []);
-
 
   function childCallback(value) {
     setSwapCreated(value)
