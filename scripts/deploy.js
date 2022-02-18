@@ -8,24 +8,24 @@ async function main() {
     const dai = await Dai.deploy();
     console.log("Dai:", dai.address);
     console.log(owner.address);
-    const mint = await dai.faucet(From.address, 100000000000000);
+    const mint = await dai.faucet(From.address, 10000000000000);
 
     const PartySwap = await ethers.getContractFactory("PartySwap");
     const partySwap = await PartySwap.deploy();
-    const allow = await dai.connect(From).approve(partySwap.address, 1000000000)
-    var createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", 1000, 1000, 2, true)
-    createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", 11000, 1000, 2, true)
-    createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", 12000, 1000, 2, true)
-    createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", 13000, 1000, 2, true)
-    createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", 14000, 1000, 2, true)
-    createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", 15000, 1000, 2, true)
-    createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", 16000, 1000, 2, true)
-    createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", 17000, 1000, 2, true)
-    createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", 18000, 1000, 2, true)
-    createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", 19000, 1000, 2, true)
-    createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", 10000, 1000, 2, true)
-    createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", 11000, 1000, 2, true)
-    createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", 99000, 1000, 2, true)
+    const allow = await dai.connect(From).approve(partySwap.address, 90000000000000)
+    var createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", 10000000, 10000000, 2, true)
+    createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", 110000000, 100000000, 2, true)
+    createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", 120000000, 100000000, 2, true)
+    createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", 130000000, 100000000, 2, true)
+    createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", 140000000, 100000000, 2, true)
+    createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", 150000000, 100000000, 2, true)
+    createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", 160000000, 100000000, 2, true)
+    createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", 170000000, 100000000, 2, true)
+    createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", 180000000, 100000000, 2, true)
+    createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", 190000000, 100000000, 2, true)
+    createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", 100000000, 100000000, 2, true)
+    createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", 110000000, 100000000, 2, true)
+    createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", 9, 100000000, 2, true)
     console.log("PartySwap deployed to:", partySwap.address);
     console.log("From Address", From.address);
 

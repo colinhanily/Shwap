@@ -1,4 +1,4 @@
-import 'bootstrap/dist/css/bootstrap.css'; // Add this line
+import 'bootstrap/dist/css/bootstrap.css';
 import React, { useEffect, useState } from 'react';
 import { getWeb3, getPartySwap, walletChanges, getERC20, isToken, getUserSwaps, connectWalletHandler } from '../components/utils';
 import styles from '../styles/PartySwap.module.css'
@@ -15,14 +15,11 @@ export default function PartySwap() {
   const [swapCreated, setSwapCreated] = useState(false);
   
   useEffect(() => {
-    console.log(swapCreated)
     const init = async () => {
       const web3 = getWeb3();
       let account = await connectWalletHandler();
       const partySwap = await getPartySwap();
-      let swapId = await partySwap.methods.current_swap_id();
       let swaps = await getUserSwaps(account);
-
       if (swaps.length > 0)
         setSwapsPresent(true)
       else

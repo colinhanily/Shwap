@@ -230,12 +230,13 @@ const MySwaps = () => {
 
         if (youDeposit.toString() == "true" && youComplete.toString() == "false" && counterpartyDeposit.toString() == "true" && counterpartyComplete.toString() == "false" ) {
             return <td align='center'>
+                    <Button className={styles.TableButtons} id={idx} onClick={userWithdrawCounterparty} variant="success" size="sm">
+                        {loadingId[idx] && withdrawCounterPartyLoading ? <Spinner size="sm" animation="border" /> : ""} Withdraw {toSymbol}
+                    </Button>
                     <Button className={styles.TableButtons} id={idx} onClick={userWithdrawOwn} variant="danger" size="sm">
                         {loadingId[idx] && withdrawOwnloading ? <Spinner size="sm" animation="border" /> : ""} Withdraw {fromSymbol}
                     </Button>
-                    <Button className={styles.TableButtons} id={idx} onClick={userWithdrawCounterparty} variant="success" size="sm">
-                        {loadingId[idx] && withdrawCounterPartyLoading ? <Spinner size="sm" animation="border" /> : ""} Withdraw {toSymbol}
-                    </Button></td>
+                    </td>
         } else if (youDeposit.toString() == "true" && youComplete.toString() == "false" && counterpartyDeposit.toString() == "true" && counterpartyComplete.toString() == "true") {
             return  <td align='center'>
                         <Button className={styles.TableButtons} id={idx} onClick={userWithdrawCounterparty} variant="success" size="sm">

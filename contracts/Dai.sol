@@ -9,6 +9,10 @@ contract Dai is ERC20 {
         console.log(msg.sender);
     }
 
+    //function decimals() public view override returns (uint8) {
+        //return 2;
+    //}
+
     function faucet(address to, uint amount) external {
         _mint(to, amount);
     }

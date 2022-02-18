@@ -13,10 +13,14 @@ const getWeb3 = () => {
 const getPartySwap = async () => {
     const web3 = getWeb3();
 
-    return new web3.eth.Contract(
-        PartySwap.abi,
-        PartySwap.address
-    )
+    try {
+        return new web3.eth.Contract(
+            PartySwap.abi,
+            PartySwap.address
+        )
+    } catch (e) {
+        console.log(e)
+    }
 }; 
 
 const checkIfTokenIsEth = (address) => {
@@ -28,7 +32,6 @@ const checkIfTokenIsEth = (address) => {
     } catch (e) {
         return false
     }
-
 }
 
 const createSwap = async (currentAccount, counterPartyAddress, fromTokenAddress, toTokenAddress, fromAmount, toAmount, isEth, sendOnCreate) => {
@@ -64,23 +67,10 @@ const createSwap = async (currentAccount, counterPartyAddress, fromTokenAddress,
     counterPartyAddress = counterPartyAddress.trim();
     sendOnCreate = +sendOnCreate;
 
-    console.log("==================")
-    console.log(currentAccount)
-    console.log(counterPartyAddress)
-    console.log(fromTokenAddress);
-    console.log(toTokenAddress)
-    console.log("HEY")
-    console.log(fromAmount)
-    console.log(toAmount)
-    console.log(isEth)
-    console.log(sendOnCreate);
-    console.log("==================")
-
     try {
         await partySwap.methods.createSwap(currentAccount, counterPartyAddress, fromTokenAddress, toTokenAddress, fromAmount, toAmount, isEth, sendOnCreate).send({from: currentAccount});
         return true
     } catch (e) {
-        console.log("ERROR")
         console.log(e)
         return false
     }
@@ -89,10 +79,6 @@ const createSwap = async (currentAccount, counterPartyAddress, fromTokenAddress,
 const deposit = async (currentAccount, swapDetails) => {
     const web3 = getWeb3();
     const partySwap = await getPartySwap();
-    console.log("Initiator")
-    console.log(swapDetails.swapInitiator)
-    console.log("YourAddress")
-    console.log(currentAccount)
     let isEth = swapDetails.isEth;
 
     try {
@@ -141,7 +127,6 @@ const withdrawOwnTokens = async (currentAccount, swapDetails) => {
 
 const withdrawCounterPartyTokens = async (currentAccount, swapDetails) => {
     const partySwap = await getPartySwap();
-    console.log(swapDetails)
     try {
         if (currentAccount.toLowerCase() == swapDetails.swapInitiator.toLowerCase())
             await partySwap.methods.from_withdraw_to_tokens(swapDetails.swapId).send({from: currentAccount});
@@ -152,13 +137,10 @@ const withdrawCounterPartyTokens = async (currentAccount, swapDetails) => {
         console.log(e)
         return false;
     }
-    
-
 }
 
 const isToken = async (address) => {
     try {
-     
         if (address == "0x0000000000000000000000000000000000000000")
             return true;
 
@@ -166,7 +148,7 @@ const isToken = async (address) => {
         var symbol = await tokenContract.methods.symbol().call();
         var totalSupply = await tokenContract.methods.totalSupply().call();
         var name = await tokenContract.methods.name.call();
-        var decimals = await tokenContract.methods.decimals();
+        var decimals = await tokenContract.methods.decimals().call();
     } catch (e) {
         console.log(e)
         return false;
@@ -179,7 +161,8 @@ const getERC20Decimals = async (address) => {
         if (address == "0x0000000000000000000000000000000000000000") 
             return '18';
         let tokenContract = await getERC20(address);
-        let decimals = await tokenContract.methods.decimals.call();
+        let decimals = await tokenContract.methods.decimals().call();
+        console.log(decimals)
         return decimals
     } catch (e) {
         console.log(e)
@@ -251,37 +234,40 @@ async function getUserSwaps(currentAccount) {
         return null;
     }
 
-    let partySwap = await getPartySwap();
-    let userSwapsFrom = await partySwap.getPastEvents('swapCreated', {
-        filter: {from: currentAccount},
-        fromBlock: 0,
-        ToBlock: 'latest'
-      });
+    try {
+        let partySwap = await getPartySwap();
+        let userSwapsFrom = await partySwap.getPastEvents('swapCreated', {
+            filter: {from: currentAccount},
+            fromBlock: 0,
+            ToBlock: 'latest'
+        });
 
-    let userSwapsTo = await partySwap.getPastEvents('swapCreated', {
-        filter: {to: currentAccount},
-        fromBlock: 0,
-        ToBlock: 'latest'
-      });
+        let userSwapsTo = await partySwap.getPastEvents('swapCreated', {
+            filter: {to: currentAccount},
+            fromBlock: 0,
+            ToBlock: 'latest'
+        });
 
-    var swapsArray = [];
-    
-    for (let i = 0; i < userSwapsTo.length; i++) {
-        let swapData = await partySwap.methods.swaps_id_details_getter(userSwapsTo[i].returnValues.current_swap_id).call();
-        let swapNumber = userSwapsTo[i].returnValues.current_swap_id;
-        let swap = {swapId : swapNumber};
-        Object.assign(swap, swapData);
-        swapsArray.push(swap);
+        var swapsArray = [];
+            for (let i = 0; i < userSwapsTo.length; i++) {
+                let swapData = await partySwap.methods.swaps_id_details_getter(userSwapsTo[i].returnValues.current_swap_id).call();
+                let swapNumber = userSwapsTo[i].returnValues.current_swap_id;
+                let swap = {swapId : swapNumber};
+                Object.assign(swap, swapData);
+                swapsArray.push(swap);
+            }
+
+            for (let i = 0; i < userSwapsFrom.length; i++) {
+                let swapData = await partySwap.methods.swaps_id_details_getter(userSwapsFrom[i].returnValues.current_swap_id).call();
+                let swapNumber = userSwapsFrom[i].returnValues.current_swap_id;
+                let swap = {swapId : swapNumber};
+                Object.assign(swap, swapData);
+                swapsArray.push(swap);
+            }
+    } catch (e) {
+        console.log(e)
+        return []
     }
-
-    for (let i = 0; i < userSwapsFrom.length; i++) {
-        let swapData = await partySwap.methods.swaps_id_details_getter(userSwapsFrom[i].returnValues.current_swap_id).call();
-        let swapNumber = userSwapsFrom[i].returnValues.current_swap_id;
-        let swap = {swapId : swapNumber};
-        Object.assign(swap, swapData);
-        swapsArray.push(swap);
-    }
-
     return swapsArray;
 }
 
@@ -377,7 +363,7 @@ async function formatUserSwaps(current_account, userSwaps) {
 
         if (toComplete == true){
             counterPartyStatus = "✅"
-        } else if (toComplete == "false" && counterPartyDeposited == "true") {
+        } else if (toComplete.toString() == "false" && counterPartyDeposited.toString() == "true") {
             counterPartyStatus = "Deposited"
         } else {
             counterPartyStatus = "Yet To Deposit"   
@@ -408,10 +394,6 @@ async function getTokenName(address) {
 
 const connectWalletHandler = async (e) => {
     const { ethereum } = window;
-
-    if (window.ethereum.isConnected()) {
-        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-    }
 
     if (!ethereum) {
         alert("Please install a web3 wallet!");

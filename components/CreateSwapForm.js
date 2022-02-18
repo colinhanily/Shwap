@@ -196,11 +196,11 @@ const CreateSwapForm = () => {
         
         setCreateButtonLoading(true)
         let created = await createSwap(currentAccount, counterPartyAddress, fromTokenAddress, toTokenAddress, fromAmount, toAmount, isEth, sendOnCreate);
-        //if (created == true) {
-            //window.location.reload(true);
-        //} else if (created == false) {
-            //setCreateButtonLoading(false)
-        //}
+        if (created == true) {
+            window.location.reload(true);
+        } else if (created == false) {
+            setCreateButtonLoading(false)
+        }
     }
 
     async function grabFromDropDownToken(token, tokenImage, tokenAddress) {
