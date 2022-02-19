@@ -18,7 +18,10 @@
 .CounterValue{
     display: flex;
     color: white;
-    margin-left: 40%;
+    justify-content: center;
+    align-items: center;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
 }
 
 .CheckBoxLabel {

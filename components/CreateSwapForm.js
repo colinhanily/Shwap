@@ -9,10 +9,10 @@ import { Row, Col } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { InputGroup } from 'react-bootstrap';
-import { connectWalletHandler, isToken, isValidAddress, createSwap, approveToken, checkTokenIsApproved} from '../components/utils';
+import { connectWalletHandler, isToken, isValidAddress, createSwap, approveToken, checkTokenIsApproved, getTotalSwaps} from '../components/utils';
 
-const Web3 = require('web3');
-const web3 = new Web3('http://localhost:9545');
+const web3 = require('web3');
+
 
 
 
@@ -37,6 +37,7 @@ const CreateSwapForm = () => {
     const [toTokenImage, setToTokenImage] = useState(false);
     const [fromTokenCorrect, isFromTokenCorrect] = useState(false);
     const [toTokenCorrect, isToTokenCorrect] = useState(false);
+    const [totalSwaps, setTotalSwaps] = useState(undefined);
 
     const enableCreateSwap = async (_fromTokenAddress, _toTokenAddress, _validFromToken, _validToToken, _fromAmount,
                                     _toAmount, _counterPartyAddress, _tokenApproved) => {
@@ -95,7 +96,12 @@ const CreateSwapForm = () => {
             if (validToToken) {
                 isToTokenCorrect("success")
             }
-            isFromTokenCorrect(false)
+            
+            if (tokenAddress == "") {
+                isFromTokenCorrect(false)
+            } else {
+                isFromTokenCorrect("danger")
+            }
             isApproved(false);
             setApproveButton(true);
         }
@@ -130,7 +136,10 @@ const CreateSwapForm = () => {
         } else {
             if (validFromToken)
                 isFromTokenCorrect("success")
-            isToTokenCorrect(false)
+            if (tokenAddress == "")
+                isToTokenCorrect(false)
+            else
+                isToTokenCorrect("danger")
         }
 
         enableCreateSwap(fromTokenAddress, tokenAddress, validFromToken, true, fromAmount, toAmount, counterPartyAddress, tokenApproved)
@@ -174,7 +183,7 @@ const CreateSwapForm = () => {
         enableCreateSwap(fromTokenAddress, toTokenAddress, validFromToken, validToToken, fromAmount, amount, counterPartyAddress, tokenApproved)
     }
 
-    const approval = async (id) => {
+    const approval = async () => {
 
         setApproveButtonLoading(true)
         const approval = await approveToken(currentAccount, fromTokenAddress);
@@ -279,6 +288,9 @@ const CustomMenu = React.forwardRef(
         async function setAccount() {
            let account = await connectWalletHandler();
            setCurrentAccount(account);
+           let numSwaps = await getTotalSwaps();
+           console.log(numSwaps)
+           setTotalSwaps(numSwaps)
         };
         setAccount();
     }, []);
@@ -286,8 +298,8 @@ const CustomMenu = React.forwardRef(
 
     return (
         <Container className={styles.FormContainer}>
-            <h1 className={styles.CounterLabel}>Total Swapped Value</h1>
-            <h2 className={styles.CounterValue}>$0</h2>
+            <h1 className={styles.CounterLabel}>Total Number of Swaps</h1>
+            <h2 className={styles.CounterValue}>{totalSwaps}</h2>
             <Form>
                 <Form.Group className="mb-4">
                     <Form.Label className={styles.FormLabel} >You Send</Form.Label>

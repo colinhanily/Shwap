@@ -16,18 +16,16 @@ const Header = () => {
         e.preventDefault();
 
         let account = await connectWalletHandler();
-        console.log("ACCCOUNT")
-        console.log(account)
-        setConnectButton(account.substring(0,4) + "..." + account.substring(account.length -4))
+        if (account != undefined)
+            setConnectButton(account.substring(0,4) + "..." + account.substring(account.length -4))
     }
 
     async function getWalletAddrRefresh()
     {
         let account = await connectWalletHandler();
-        setConnectButton(account.substring(0,4) + "..." + account.substring(account.length -4))
+        if (account != undefined)
+            setConnectButton(account.substring(0,4) + "..." + account.substring(account.length -4))
     }
-
-
 
     useEffect(() => {
         if(window.ethereum) {

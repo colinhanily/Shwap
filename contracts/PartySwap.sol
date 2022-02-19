@@ -35,6 +35,8 @@ contract PartySwap {
     uint256 public eth_fees_accrued;
 
     event swapCreated(address indexed from, address indexed to, uint current_swap_id);
+    event fromHasWithdrawnToTokens(address tokenAddress, uint amount);
+    event toHasWithdrawnFromTokens(address tokenAddress, uint amount);
 
     constructor() {
         admin = payable(msg.sender);
@@ -148,6 +150,8 @@ contract PartySwap {
         }
 
         swaps_list[swap_id].from_complete = true;
+
+        emit fromHasWithdrawnToTokens(swaps_list[swap_id].to_token, swaps_list[swap_id].to_amount);
     }
 
     function to_withdraw_from_tokens(uint swap_id) external {
@@ -163,11 +167,12 @@ contract PartySwap {
             token.transfer(msg.sender, swaps_list[swap_id].to_amount - to_token_fee);            
         } else {
             eth_fees_accrued += to_token_fee;
-            swaps_list[swap_id].to.transfer(swaps_list[swap_id].from_amount);// - to_token_fee);
-            
+            swaps_list[swap_id].to.transfer(swaps_list[swap_id].from_amount - to_token_fee); 
         }
 
         swaps_list[swap_id].to_complete = true;
+
+        emit fromHasWithdrawnToTokens(swaps_list[swap_id].from_token, swaps_list[swap_id].to_amount );
     }
 
     function switch_admin_address(address payable new_admin) external {

@@ -20,6 +20,7 @@ export default function PartySwap() {
       let account = await connectWalletHandler();
       const partySwap = await getPartySwap();
       let swaps = await getUserSwaps(account);
+
       if (swaps.length > 0)
         setSwapsPresent(true)
       else

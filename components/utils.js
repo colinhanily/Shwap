@@ -12,7 +12,6 @@ const getWeb3 = () => {
 
 const getPartySwap = async () => {
     const web3 = getWeb3();
-
     try {
         return new web3.eth.Contract(
             PartySwap.abi,
@@ -34,34 +33,44 @@ const checkIfTokenIsEth = (address) => {
     }
 }
 
+const getTotalSwaps = async () => {
+    try {
+        let partySwap = await getPartySwap();
+        let swapNumber = await partySwap.methods.current_swap_id().call();
+        return swapNumber
+    } catch (e) {
+        console.log(e);
+        return 0
+    }
+}
+
 const createSwap = async (currentAccount, counterPartyAddress, fromTokenAddress, toTokenAddress, fromAmount, toAmount, isEth, sendOnCreate) => {
     const partySwap = await getPartySwap();
     var decimals;
-    var web3 = getWeb3();
 
     if (isEth == 0 || isEth == 1) {
         let fromDecimals = getERC20Decimals(fromTokenAddress)
         if (fromDecimals == '18') {
-            fromAmount = web3.utils.toWei(fromAmount.toString());
+            fromAmount = Web3.utils.toWei(fromAmount.toString());
             console.log("IsETH: " + isEth);
         } else {
             let append = +fromDecimals + +1;
             fromAmount = fromAmount.toString().padEnd(parseInt(append), "0");
         }
-        toAmount = web3.utils.toWei(toAmount.toString());           
+        toAmount = Web3.utils.toWei(toAmount.toString());           
     }
 
     if (isEth == 0 || isEth == 2) {
         let toDecimals = await getERC20Decimals(toTokenAddress);
         
         if (toDecimals == '18') {
-            toAmount = web3.utils.toWei(toAmount.toString());                        
+            toAmount = Web3.utils.toWei(toAmount.toString());                        
         } else {
-            toAmount = web3.utils.padRight(toAmount.toString(), decimals)
+            toAmount = Web3.utils.padRight(toAmount.toString(), decimals)
         let append = +toDecimals + +1;
             toAmount = toAmount.toString().padEnd(parseInt(append), "0");
         }
-        fromAmount = web3.utils.toWei(fromAmount.toString());
+        fromAmount = Web3.utils.toWei(fromAmount.toString());
     }
 
     counterPartyAddress = counterPartyAddress.trim();
@@ -92,7 +101,7 @@ const deposit = async (currentAccount, swapDetails) => {
         } else {
             if (isEth == 2) {
                 await partySwap.methods.to_deposit(swapDetails.swapId).send({from: currentAccount,
-                                                                               value: web3.utils.toWei(swapDetails.decimalYouSend)});
+                                                                             value: web3.utils.toWei(swapDetails.decimalYouSend)});
             } else {
                 await partySwap.methods.to_deposit(swapDetails.swapId).send({from: currentAccount});
             }
@@ -104,12 +113,6 @@ const deposit = async (currentAccount, swapDetails) => {
 }
 
 const withdrawOwnTokens = async (currentAccount, swapDetails) => {
-    console.log("Initiator")
-    console.log(swapDetails.swapInitiator)
-    console.log("YourAddress")
-    console.log(currentAccount)
-
-    console.log
     const partySwap = await getPartySwap();
     console.log(swapDetails)
     try {
@@ -170,9 +173,8 @@ const getERC20Decimals = async (address) => {
 }
 
 const isValidAddress = (addr) => {
-    const web3 = getWeb3();
     let address = addr.trim()
-    if (web3.utils.isAddress(addr) == false)
+    if (Web3.utils.isAddress(addr) == false)
         return false
     if (address.substring(0,2) != '0x')
         return false
@@ -188,7 +190,6 @@ const approveToken = async (currentAccount, address) => {
             if (await checkTokenIsApproved(currentAccount, address) === false) {
                 let tokenContract = await getERC20(address);
                 let approve = await tokenContract.methods.approve(PartySwap.address, "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff").send({from: currentAccount});
-                console.log(approve)
             }
             return true;
         } catch (e) {
@@ -272,15 +273,14 @@ async function getUserSwaps(currentAccount) {
 }
 
 const convertAmountToDecimal = async (address, amount) => {
-    const web3 = getWeb3();
         try {
             if (address === "0x0000000000000000000000000000000000000000")
-                return web3.utils.fromWei(amount.toString());
+                return Web3.utils.fromWei(amount.toString());
 
             let decimals = await getERC20Decimals(address)
 
             if (decimals === '18' || isNaN(decimals) === true) {
-                return web3.utils.fromWei(amount.toString());
+                return Web3.utils.fromWei(amount.toString());
             } else {            
                 return (amount * 10**-decimals).toString();
             }
@@ -291,7 +291,6 @@ const convertAmountToDecimal = async (address, amount) => {
 
 async function formatUserSwaps(current_account, userSwaps) {
     var formattedSwapsArr = new Array()
-    var fromIndex;
     var toIndex;
     var fromToken;
     var toToken;
@@ -300,9 +299,7 @@ async function formatUserSwaps(current_account, userSwaps) {
     var fee;
     var fromDeposited;
     var toDeposited;
-    var fromComplete;
-    var toComplete;
-    var isEth;
+    var isEthIdx;
     var swapStatus;
     var counterPartyStatus;
     
@@ -310,7 +307,6 @@ async function formatUserSwaps(current_account, userSwaps) {
         let userSwap = userSwaps[i];
         
         if (current_account.toLowerCase() === userSwap.from.toLowerCase()) {
-            fromIndex = 0;
             toIndex = 1;
             fromToken = 2;
             toToken = 3;
@@ -321,9 +317,8 @@ async function formatUserSwaps(current_account, userSwaps) {
             toDeposited = 8;
             fromComplete = 9;
             toComplete = 10;
-            isEth = 11;
+            isEthIdx = 11;
         } else {
-            fromIndex = 1;
             toIndex = 0;
             fromToken = 3;
             toToken = 2;
@@ -334,7 +329,7 @@ async function formatUserSwaps(current_account, userSwaps) {
             toDeposited = 7;
             fromComplete = 10;
             toComplete = 9;
-            isEth = 11;
+            isEthIdx = 11;
         }
 
         let fromTokenSymbol = await getTokenName(userSwap[fromToken]);
@@ -345,7 +340,7 @@ async function formatUserSwaps(current_account, userSwaps) {
 
         fee = fee / 100;
 
-        let isEth = userSwap[isEth];
+        let isEth = userSwap[isEthIdx];
         let youSend = decimalYouSend.concat(' ').concat(fromTokenSymbol);
         let youReceive = decimalYouReceive.concat(' ').concat(toTokenSymbol);
         let counterPartyAddress = userSwap[toIndex];
@@ -353,8 +348,7 @@ async function formatUserSwaps(current_account, userSwaps) {
         let counterPartyDeposited = userSwap[toDeposited].toString();
         let toComplete = userSwap[toComplete];
         let fromComplete = userSwap[fromComplete];
-        let fromStatus = userSwap[fromComplete];
-        let toStatus = userSwap[toComplete];
+
 
         if (fromComplete == false || toComplete == false)
             swapStatus = "Incomplete";
@@ -420,4 +414,4 @@ const walletChanges = async () => {
 
 export { getWeb3, getPartySwap, connectWalletHandler, walletChanges, getERC20, isToken,
          isValidAddress, createSwap, approveToken, checkTokenIsApproved, getUserSwaps,
-         formatUserSwaps, checkIfTokenIsEth, deposit, withdrawCounterPartyTokens, withdrawOwnTokens}
+         formatUserSwaps, checkIfTokenIsEth, deposit, withdrawCounterPartyTokens, withdrawOwnTokens, getTotalSwaps}
