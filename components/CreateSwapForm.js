@@ -22,8 +22,8 @@ const CreateSwapForm = () => {
     const [currentAccount, setCurrentAccount] = useState(' ');
     const [approveButtonLoading, setApproveButtonLoading] = useState(false);
     const [createButtonLoading, setCreateButtonLoading] = useState(false);
-    const [fromToken, setFromToken] = useState(' ');
-    const [toToken, setToToken] = useState(' ');
+    const [fromToken, setFromToken] = useState('');
+    const [toToken, setToToken] = useState('');
     const [fromTokenAddress, setFromTokenAddress] = useState(' ');
     const [toTokenAddress, setToTokenAddress] = useState(' ');
     const [fromAmount, setFromAmount] = useState(' ');
@@ -50,6 +50,14 @@ const CreateSwapForm = () => {
             _counterPartyAddress == ' ' ||
             _tokenApproved == false     ||
             _fromTokenAddress == _toTokenAddress) {
+            console.log(_validFromToken)
+            console.log(_validToToken)
+            console.log(_toTokenAddress)
+            console.log(_fromTokenAddress)
+            console.log(_fromAmount)
+            console.log(_toAmount)
+            console.log(_counterPartyAddress)
+            console.log(_tokenApproved)
             setCreateSwap(true)
         } else {
             setCreateSwap(false);
@@ -165,7 +173,6 @@ const CreateSwapForm = () => {
             setFromAmount(' ');
             amount = ' ';
         } else {
-            let amountInWei = web3.utils.toWei(amount.toString(), 'ether')
             setFromAmount(amount);
         }
 
@@ -188,9 +195,15 @@ const CreateSwapForm = () => {
         setApproveButtonLoading(true)
         const approval = await approveToken(currentAccount, fromTokenAddress);
          
-        if (approval === true) {
-            setApproveButton(true);   
+        if (approval == true) {
+            setApproveButton(true);
+            setApproveButtonLoading(false)   
+            isApproved(true)
+        } else {
+            isApproved(false)
         }
+        console.log("EHLLO")
+        console.log(approval)
 
         enableCreateSwap(fromTokenAddress, toTokenAddress, validFromToken, validToToken, fromAmount, toAmount, counterPartyAddress, true);
     }
@@ -306,7 +319,7 @@ const CustomMenu = React.forwardRef(
                     <Row>
                         <Col>
                             <InputGroup className={styles.FormInputSplitLeft}>
-                                <Form.Control placeholder="Token Address" value={fromToken}  onChange={e => checkFromToken(e.target.value)} />
+                                <Form.Control placeholder="Token Address..." value={fromToken}  onChange={e => checkFromToken(e.target.value)} />
                                 <Dropdown>
                                     <Dropdown.Toggle id="dropdownFromToken"className={fromTokenCorrect === false ? styles.DropdownButton : (fromTokenCorrect === "success" ? styles.DropdownButtonSuccess : styles.DropdownButtonDanger)}>
                                     { fromTokenImage != false &&   <img width="30" height="30" className={styles.TokenImage} src={fromTokenImage}></img> }
@@ -332,7 +345,7 @@ const CustomMenu = React.forwardRef(
                     <Row>
                         <Col>
                             <InputGroup className={styles.FormInputSplitLeft}>
-                                <Form.Control value={toToken} placeholder="Token Address" onChange={e => checkToToken(e.target.value)} />
+                                <Form.Control value={toToken} placeholder="Token Address..." onChange={e => checkToToken(e.target.value)} />
                                 <Dropdown>
                                     <Dropdown.Toggle id="dropdownToToken" className={toTokenCorrect === false ? styles.DropdownButton : (toTokenCorrect === "success" ? styles.DropdownButtonSuccess : styles.DropdownButtonDanger)}>
                                     { toTokenImage != false &&  <img width="30" height="30" className={styles.TokenImage} src={toTokenImage}></img> }
