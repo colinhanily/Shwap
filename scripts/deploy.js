@@ -12,10 +12,9 @@ async function main() {
 
     const PartySwap = await ethers.getContractFactory("PartySwap");
     const partySwap = await PartySwap.deploy();
-    //const allow = await dai.connect(From).approve(partySwap.address, ethers.utils.parseEther("900000"))
-    //var createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", ethers.utils.parseEther('100'), ethers.utils.parseEther('100'), 2, true)
+    const allow = await dai.connect(From).approve(partySwap.address, ethers.utils.parseEther("900000"))
+    var createSwap =  await partySwap.connect(From).createSwap(From.address, To.address, dai.address, "0x0000000000000000000000000000000000000000", ethers.utils.parseEther('100'), ethers.utils.parseEther('100'), 2, true);
     
-//    console.log(createSwap)
     console.log("PartySwap deployed to:", partySwap.address);
     console.log("From Address", From.address);
 

@@ -50,14 +50,6 @@ const CreateSwapForm = () => {
             _counterPartyAddress == ' ' ||
             _tokenApproved == false     ||
             _fromTokenAddress == _toTokenAddress) {
-            console.log(_validFromToken)
-            console.log(_validToToken)
-            console.log(_toTokenAddress)
-            console.log(_fromTokenAddress)
-            console.log(_fromAmount)
-            console.log(_toAmount)
-            console.log(_counterPartyAddress)
-            console.log(_tokenApproved)
             setCreateSwap(true)
         } else {
             setCreateSwap(false);
@@ -202,8 +194,6 @@ const CreateSwapForm = () => {
         } else {
             isApproved(false)
         }
-        console.log("EHLLO")
-        console.log(approval)
 
         enableCreateSwap(fromTokenAddress, toTokenAddress, validFromToken, validToToken, fromAmount, toAmount, counterPartyAddress, true);
     }
@@ -302,7 +292,6 @@ const CustomMenu = React.forwardRef(
            let account = await connectWalletHandler();
            setCurrentAccount(account);
            let numSwaps = await getTotalSwaps();
-           console.log(numSwaps)
            setTotalSwaps(numSwaps)
         };
         setAccount();
