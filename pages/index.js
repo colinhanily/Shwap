@@ -21,7 +21,7 @@ export default function PartySwap() {
       const partySwap = await getPartySwap();
       let swaps = await getUserSwaps(account);
 
-      if (swaps.length > 0)
+      if (swaps != null && swaps.length > 0)
         setSwapsPresent(true)
       else
         setSwapsPresent(false)

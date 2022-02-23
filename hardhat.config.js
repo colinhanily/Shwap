@@ -18,6 +18,14 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
+	networks: {
+		hardhat: {
+		},
+		rinkeby: {
+			url: "INSERT INFURA ENDPOINT HERE",
+			accounts: ["INSERT PRIVATE KEY OF ACCOUNT TO DEPLOY FROM HERE"]
+		}
+	},
 	solidity: {
 		compilers: [
 			{

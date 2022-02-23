@@ -13,9 +13,6 @@ import { connectWalletHandler, isToken, isValidAddress, createSwap, approveToken
 
 const web3 = require('web3');
 
-
-
-
 const CreateSwapForm = () => {   
     const [validFromToken, setValidFromToken] = useState(false);
     const [validToToken, setValidToToken] = useState(false);
@@ -50,6 +47,14 @@ const CreateSwapForm = () => {
             _counterPartyAddress == ' ' ||
             _tokenApproved == false     ||
             _fromTokenAddress == _toTokenAddress) {
+            //console.log(_validFromToken)
+            //console.log(_validToToken)
+            //console.log(_fromTokenAddress)
+            //console.log(_toTokenAddress)
+            //console.log(_fromAmount)
+            //console.log(_toAmount)
+            //console.log(_counterPartyAddress)
+            //console.log(_tokenApproved)
             setCreateSwap(true)
         } else {
             setCreateSwap(false);

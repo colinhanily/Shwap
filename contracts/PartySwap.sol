@@ -138,15 +138,15 @@ contract PartySwap {
         require(swaps_list[swap_id].from_deposited == true, "You must first deposit your tokens before withdrawing counterparties");
         require(swaps_list[swap_id].to_deposited == true, "Counterparty has not deposited tokens yet");
 
-        uint from_token_fee = swaps_list[swap_id].to_amount * swaps_list[swap_id].fee_percent_each / 10000;
+        uint to_token_fee = swaps_list[swap_id].to_amount * swaps_list[swap_id].fee_percent_each / 10000;
 
         if (swaps_list[swap_id].is_eth == uint256(token_type.from_eth)) {
             Token token = Token(swaps_list[swap_id].to_token);
-            token_fees_accrued[swaps_list[swap_id].to_token] += from_token_fee;
-            token.transfer(msg.sender, swaps_list[swap_id].to_amount - from_token_fee);
+            token_fees_accrued[swaps_list[swap_id].to_token] += to_token_fee;
+            token.transfer(msg.sender, swaps_list[swap_id].to_amount - to_token_fee);
         } else {
-            eth_fees_accrued += from_token_fee;
-            swaps_list[swap_id].from.transfer(swaps_list[swap_id].to_amount - from_token_fee);
+            eth_fees_accrued += to_token_fee;
+            swaps_list[swap_id].from.transfer(swaps_list[swap_id].to_amount - to_token_fee);
         }
 
         swaps_list[swap_id].from_complete = true;
@@ -157,22 +157,23 @@ contract PartySwap {
     function to_withdraw_from_tokens(uint swap_id) external {
         require(swaps_list[swap_id].to == msg.sender, "Withdrawals from swap participant addresses only");
         require(swaps_list[swap_id].to_complete == false, "Particpant already withdrew tokens");
+        require(swaps_list[swap_id].to_deposited == true, "You must first deposit your tokens before withdrawing counterparties");
         require(swaps_list[swap_id].from_deposited == true, "Counterparty has not deposited tokens yet");
 
-        uint to_token_fee = swaps_list[swap_id].from_amount * swaps_list[swap_id].fee_percent_each / 10000;
+        uint from_token_fee = swaps_list[swap_id].from_amount * swaps_list[swap_id].fee_percent_each / 10000;
   
         if (swaps_list[swap_id].is_eth == uint256(token_type.to_eth)) {
             Token token = Token(swaps_list[swap_id].from_token);
-            token_fees_accrued[swaps_list[swap_id].to_token] += to_token_fee;
-            token.transfer(msg.sender, swaps_list[swap_id].to_amount - to_token_fee);            
+            token_fees_accrued[swaps_list[swap_id].from_token] += from_token_fee;
+            token.transfer(msg.sender, swaps_list[swap_id].from_amount - from_token_fee);            
         } else {
-            eth_fees_accrued += to_token_fee;
-            swaps_list[swap_id].to.transfer(swaps_list[swap_id].from_amount - to_token_fee); 
+            eth_fees_accrued += from_token_fee;
+            swaps_list[swap_id].to.transfer(swaps_list[swap_id].from_amount - from_token_fee); 
         }
 
         swaps_list[swap_id].to_complete = true;
 
-        emit fromHasWithdrawnToTokens(swaps_list[swap_id].from_token, swaps_list[swap_id].to_amount );
+        emit toHasWithdrawnFromTokens(swaps_list[swap_id].from_token, swaps_list[swap_id].from_amount );
     }
 
     function switch_admin_address(address payable new_admin) external {
@@ -184,14 +185,12 @@ contract PartySwap {
         require(msg.sender == admin, "Accessible by admin only");
 
         if (withdraw_eth) {
-            eth_fees_accrued = 0;
             admin.transfer(eth_fees_accrued);
-            
+            eth_fees_accrued = 0;
         } else {
             Token token = Token(token_address);
-            token_fees_accrued[token_address] = 0;
             token.transfer(admin, token_fees_accrued[token_address]);
-            
+            token_fees_accrued[token_address] = 0;
         }
     }
 

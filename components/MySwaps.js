@@ -240,7 +240,7 @@ const MySwaps = () => {
         } else if (youDeposit.toString() == "true" && youComplete.toString() == "false" && counterpartyDeposit.toString() == "true" && counterpartyComplete.toString() == "true") {
             return  <td align='center'>
                         <Button className={styles.TableButtons} id={idx} onClick={userWithdrawCounterparty} variant="success" size="sm">
-                            {loadingId[idx] ? <Spinner size="sm" animation="border" /> : ""} Withdraw {fromSymbol}
+                            {loadingId[idx] ? <Spinner size="sm" animation="border" /> : ""} Withdraw {toSymbol}
                         </Button></td>
         } else if (youDeposit.toString() == "true" && youComplete.toString() == "false" && counterpartyDeposit.toString() == "false" && counterpartyComplete.toString() == "false") {
             return <td align='center'>
