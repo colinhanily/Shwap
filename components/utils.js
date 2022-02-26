@@ -2,6 +2,8 @@ import Web3 from 'web3';
 import PartySwap from '../artifacts/contracts/PartySwap.sol/PartySwap.json';
 import ERC20 from '../artifacts/contracts/Dai.sol/Dai.json';
 
+const rinkebyAddress = "0x0cA92183Dc9410F125738e68B72Efb8162dc664C";
+
 const getWeb3 = async () => {
             if (window.ethereum) {
                 try {
@@ -20,7 +22,7 @@ const getPartySwap = async () => {
     const web3 = new Web3(await getWeb3());
     try {
         let contract =  new web3.eth.Contract(
-            PartySwap.abi, PartySwap.address
+            PartySwap.abi, rinkebyAddress
         )
         return contract;
     } catch (e) {
