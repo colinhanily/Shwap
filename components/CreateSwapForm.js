@@ -276,7 +276,7 @@ const CustomMenu = React.forwardRef(
         >
           <FormControl
             autoFocus
-            className="mx-3 my-2 w-auto"
+            className={styles.DropDownContents}
             placeholder="Filter..."
             onChange={(e) => setValue(e.target.value)}
             value={value}
@@ -305,8 +305,8 @@ const CustomMenu = React.forwardRef(
 
     return (
         <Container className={styles.FormContainer}>
-            { totalSwaps != 0 && <h1 className={styles.CounterLabel}>Total Number of Swaps</h1> }
-            { totalSwaps != 0 && <h2 className={styles.CounterValue}>{totalSwaps}</h2> }
+            { totalSwaps > 0 && <h1 className={styles.CounterLabel}>Total Number of Swaps</h1> }
+            { totalSwaps > 0 && <h2 className={styles.CounterValue}>{totalSwaps}</h2> }
             <Form>
                 <Form.Group className="mb-4">
                     <Form.Label className={styles.FormLabel} >You Send</Form.Label>

@@ -138,6 +138,13 @@
         border-color: white;
         background-color: rgb(180, 54, 180);
     }
+
+    .DropDownContents {
+        width: 80%;
+        margin-left: 8%;
+        margin-top: 5px;
+        margin-bottom: 10px;
+    }
     
 }
 
