@@ -1,36 +1,73 @@
-.Header {
-    color: #ffaf02 !important;
-}
+@media only screen and (max-width: 478px) {
+    .Header {
+        color: #ffaf02 !important;
+    }
 
-.About {
-    color: #ffaf02 !important;
-}
+    .About {
+        color: #ffaf02 !important;
+    }
 
-.About:hover {
-    color: rgb(157, 199, 5) !important;
-}
+    .About:hover {
+        color: rgb(157, 199, 5) !important;
+    }
 
-.MySwaps {
-    color: #ffaf02 !important;
-}
+    .MySwaps {
+        color: #ffaf02 !important;
+    }
 
-.MySwaps:hover {
-    color: rgb(157, 199, 5) !important;
-}
+    .MySwaps:hover {
+        color: rgb(157, 199, 5) !important;
+    }
 
-.Brand {
-    color:#ffffff !important;
-    margin-left: 41%
-    ;
-}
+    .Brand {
+        color:#ffffff !important;
+        margin-left: 22%
+        ;
+    }
 
-.ConnectWallet {
-    border-radius: 15px;
-    max-width: 145px;
-    min-width: 145px;
-    
-}
+    .ConnectWallet {
+        border-radius: 15px;
+        max-width: 120px;
+        font-size: 12px;
+    }
 
-.ConnectWallet:hover {
-    color: rgb(0, 218, 29) !important;
+    .ConnectWallet:hover {
+        color: rgb(0, 218, 29) !important;
+    }
+}
+@media only screen and (min-width: 479px) {
+    .Header {
+        color: #ffaf02 !important;
+    }
+
+    .About {
+        color: #ffaf02 !important;
+    }
+
+    .About:hover {
+        color: rgb(157, 199, 5) !important;
+    }
+
+    .MySwaps {
+        color: #ffaf02 !important;
+    }
+
+    .MySwaps:hover {
+        color: rgb(157, 199, 5) !important;
+    }
+
+    .Brand {
+        color:#ffffff !important;
+        margin-left: 30%
+        ;
+    }
+
+    .ConnectWallet {
+        border-radius: 15px;
+        max-width: 145px;
+    }
+
+    .ConnectWallet:hover {
+        color: rgb(0, 218, 29) !important;
+    }
 }

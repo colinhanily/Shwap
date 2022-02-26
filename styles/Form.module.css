@@ -1,158 +1,302 @@
-.FormLabel {
-    display: flex;
-    color: white;
-    margin-left: 4%;
-}
-
-.CounterLabel {
-    display: flex;
-    color: white;
-    justify-content: center;
-    align-items: center;
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
-    font-weight: bold;
-    font-size: 200%;
-    
-}
-
-.CounterValue{
-    display: flex;
-    color: white;
-    justify-content: center;
-    align-items: center;
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
-    font-weight: bold;
-}
-
-.CheckBoxLabel {
-    display: flex;
-    color: white;
-    justify-content: center;
-}
-
-.FormCheckbox {
-    margin-left: 49%;
-}
-
-.FormContainer {
-    max-height: 470px;
-    min-height: 470px;
-    min-width: 500px;
-    max-width: 500px;
-    margin-top: 1vh;
-}
-
-.Approve {
-    border-radius: 15px;
-    margin-top: 10px;
-    width: 140px;
-    color: white !important;
-    border-color: gold !important;
-    background-color: rgb(180, 54, 180) !important;
-}
-
-.CreateSwap {
-    border-radius: 15px;
-    margin-top: 10px;
-    width: 140px;
-    color: white !important;
-    border-color: gold !important;
-    background-color: rgb(180, 54, 180) !important;
-}
-
-.paddingLeft {
-    margin-left: 18.5%;
-    display: flex;
-    color: white;
-}
-
-.paddingRight {
-    margin-right: 17%;
-    display: flex;
-    color: white;
-    
-}
-
-.DropdownButton {
-    background-color: rgb(180, 54, 180);
-    border-color: rgb(180, 54, 180);
-    color: white;
-}
-
-.DropdownButton:hover,.DropdownButton:focus{
-    background-color: #007bff;
-    border-color: rgb(180, 54, 180);
-    color: white;
-    box-shadow: none;
-}
-
-.DropdownButtonSuccess,.DropdownButtonSuccess:focus {
-    background-color: #28a745;
-    border-color: #28a745;
-    color: white;
-    box-shadow: none;
-}
-
-.DropdownButtonDanger,.DropdownButtonDanger:hover, .DropdownButtonDanger:focus {
-    background-color: #dc3545;
-    border-color: #dc3545;
-    color: white;
-    box-shadow: none;
-}
-
-.CounterPartyAddress {
-    display: flex;
-    margin-left: 4%;
-    width: 434px;
-}
-
-.CounterPartyAddressIncorrect,.CounterPartyAddressIncorrect:hover,.CounterPartyAddressIncorrect:focus {
-    display: flex;
-    margin-left: 4%;
-    width: 434px;
-    border-color: red;
-    box-shadow: 2px 2px red;
+@media only screen and (max-width: 478px) {
+    .FormLabel {
+        display: flex;
+        color: white;
+        margin-left: 7%;
     }
 
-.FormInputSplitLeft {
-    display: flex;
-    color: white;
-    margin-left: 6%;
-    width: 305px;
-    height: 43px;
+    .CounterLabel {
+        font-size: 150%;
+        display: flex;
+        color: white;
+        justify-content: center;
+        align-items: center;
+        font-family:Verdana, Geneva, Tahoma, sans-serif;
+        font-weight: bold;
+    }
+
+    .CounterValue{
+        display: flex;
+        color: white;
+        justify-content: center;
+        align-items: center;
+        font-family:Verdana, Geneva, Tahoma, sans-serif;
+        font-weight: bold;
+    }
+
+    .CheckBoxLabel {
+        display: flex;
+        color: white;
+        justify-content: center;
+        font-size: 12px;
+    }
+
+    .FormCheckbox {
+        margin-left: 49%;
+    }
+
+    .Approve {
+        border-radius: 15px;
+        margin-top: 10px;
+        width: 140px;
+        color: white !important;
+        border-color: gold !important;
+        background-color: rgb(180, 54, 180) !important;
+    }
+
+    .CreateSwap {
+        border-radius: 15px;
+        margin-top: 10px;
+        width: 140px;
+        color: white !important;
+        border-color: gold !important;
+        background-color: rgb(180, 54, 180) !important;
+    }
+
+    .DropdownButton {
+        background-color: rgb(180, 54, 180);
+        border-color: rgb(180, 54, 180);
+        color: white;
+    }
+
+    .DropdownButton:hover,.DropdownButton:focus{
+        background-color: #007bff;
+        border-color: rgb(180, 54, 180);
+        color: white;
+        box-shadow: none;
+    }
+
+    .DropdownButtonSuccess,.DropdownButtonSuccess:focus {
+        background-color: #28a745;
+        border-color: #28a745;
+        color: white;
+        box-shadow: none;
+    }
+
+    .DropdownButtonDanger,.DropdownButtonDanger:hover, .DropdownButtonDanger:focus {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        color: white;
+        box-shadow: none;
+    }
+
+    .CounterPartyAddress {
+        display: flex;
+        margin-left: 7%;
+        width: 87%;
+    }
+
+    .CounterPartyAddressIncorrect,.CounterPartyAddressIncorrect:hover,.CounterPartyAddressIncorrect:focus {
+        display: flex;
+        margin-left: 4%;
+        width: 434px;
+        border-color: red;
+        box-shadow: 2px 2px red;
+        }
+
+    .FormInputSplitLeft {
+        display: flex;
+        color: white;
+        margin-left: 15%;
+        width: 130%;
+        height: 43px;
+    }
+
+    .FormInputSplitRight {
+        margin-right: 7%;
+        margin-left: 37%;
+        position: flex;
+        display: flex;
+        color: white;
+        width: 50%;
+        height: 43px;
+    }
+
+    .ToForm {
+        margin-bottom: 20px;
+    }
+
+    .DropDown {
+        margin-left: 1px;
+    }
+
+    .Form {
+        display: flex;
+    }
+
+    .TokenImage {
+        margin-right: 10px
+
+    }
+
+    .DropDownMenu {
+        max-height: 50vh;
+        max-width: 27.5vh;
+        overflow-y: scroll;
+        border-width: medium;
+        border-radius: 5px;
+        border-color: white;
+        background-color: rgb(180, 54, 180);
+    }
+    
 }
 
-.FormInputSplitRight {
-    position: flex;
-    display: flex;
-    color: white;
-    width: 124px;
-    height: 43px;
-}
+@media only screen and (min-width: 479px) {
+    .FormLabel {
+        display: flex;
+        color: white;
+        margin-left: 4%;
+    }
 
-.ToForm {
-    margin-bottom: 20px;
-}
+    .CounterLabel {
+        display: flex;
+        color: white;
+        justify-content: center;
+        align-items: center;
+        font-family:Verdana, Geneva, Tahoma, sans-serif;
+        font-weight: bold;
+        font-size: 200%;
+        
+    }
 
-.DropDown {
-    margin-left: 1px;
-}
+    .CounterValue{
+        display: flex;
+        color: white;
+        justify-content: center;
+        align-items: center;
+        font-family:Verdana, Geneva, Tahoma, sans-serif;
+        font-weight: bold;
+    }
 
-.Form {
-    display: flex;
-}
+    .CheckBoxLabel {
+        display: flex;
+        color: white;
+        justify-content: center;
+    }
 
-.TokenImage {
-    margin-right: 10px
+    .FormCheckbox {
+        margin-left: 49%;
+    }
 
-}
+    .FormContainer {
+        max-height: 470px;
+        max-width: 500px;
+        margin-top: 1vh;
+        margin-bottom: 10px;
+    }
 
-.DropDownMenu {
-    max-height: 50vh;
-    max-width: 27.5vh;
-    overflow-y: scroll;
-    border-width: medium;
-    border-radius: 5px;
-    border-color: white;
-    background-color: rgb(180, 54, 180);
+    .Approve {
+        border-radius: 15px;
+        margin-top: 10px;
+        width: 140px;
+        color: white !important;
+        border-color: gold !important;
+        background-color: rgb(180, 54, 180) !important;
+    }
+
+    .CreateSwap {
+        border-radius: 15px;
+        margin-top: 10px;
+        width: 140px;
+        color: white !important;
+        border-color: gold !important;
+        background-color: rgb(180, 54, 180) !important;
+    }
+
+    .paddingLeft {
+        margin-left: 18.5%;
+        display: flex;
+        color: white;
+    }
+
+    .paddingRight {
+        margin-right: 17%;
+        display: flex;
+        color: white;
+        
+    }
+
+    .DropdownButton {
+        background-color: rgb(180, 54, 180);
+        border-color: rgb(180, 54, 180);
+        color: white;
+    }
+
+    .DropdownButton:hover,.DropdownButton:focus{
+        background-color: #007bff;
+        border-color: rgb(180, 54, 180);
+        color: white;
+        box-shadow: none;
+    }
+
+    .DropdownButtonSuccess,.DropdownButtonSuccess:focus {
+        background-color: #28a745;
+        border-color: #28a745;
+        color: white;
+        box-shadow: none;
+    }
+
+    .DropdownButtonDanger,.DropdownButtonDanger:hover, .DropdownButtonDanger:focus {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        color: white;
+        box-shadow: none;
+    }
+
+    .CounterPartyAddress {
+        display: flex;
+        margin-left: 4%;
+        width: 434px;
+    }
+
+    .CounterPartyAddressIncorrect,.CounterPartyAddressIncorrect:hover,.CounterPartyAddressIncorrect:focus {
+        display: flex;
+        margin-left: 4%;
+        width: 434px;
+        border-color: red;
+        box-shadow: 2px 2px red;
+        }
+
+    .FormInputSplitLeft {
+        display: flex;
+        color: white;
+        margin-left: 6%;
+        width: 305px;
+        height: 43px;
+    }
+
+    .FormInputSplitRight {
+        position: flex;
+        display: flex;
+        color: white;
+        width: 124px;
+        height: 43px;
+    }
+
+    .ToForm {
+        margin-bottom: 20px;
+    }
+
+    .DropDown {
+        margin-left: 1px;
+    }
+
+    .Form {
+        display: flex;
+    }
+
+    .TokenImage {
+        margin-right: 10px
+
+    }
+
+    .DropDownMenu {
+        max-height: 50vh;
+        max-width: 27.5vh;
+        overflow-y: scroll;
+        border-width: medium;
+        border-radius: 5px;
+        border-color: white;
+        background-color: rgb(180, 54, 180);
+    }
 }

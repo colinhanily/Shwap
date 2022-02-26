@@ -7,7 +7,7 @@ import Header from '../components/Header';
 
 function About() {
 
-    const text1 = "PartySwap is a fully decentralised protocol for trustless peer to peer ERC20 token swaps."
+    const text1 = "PartySwap is a decentralised protocol for trustless peer to peer ERC20 token swaps."
     const text2 = "1. Alice creates a swap with Bob using the PartySwap contract"
     const space = ""
     const text3 = "2. Alice and Bob both deposit there tokens to the contract"

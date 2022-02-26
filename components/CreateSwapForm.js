@@ -305,8 +305,8 @@ const CustomMenu = React.forwardRef(
 
     return (
         <Container className={styles.FormContainer}>
-            <h1 className={styles.CounterLabel}>Total Number of Swaps</h1>
-            <h2 className={styles.CounterValue}>{totalSwaps}</h2>
+            { totalSwaps != 0 && <h1 className={styles.CounterLabel}>Total Number of Swaps</h1> }
+            { totalSwaps != 0 && <h2 className={styles.CounterValue}>{totalSwaps}</h2> }
             <Form>
                 <Form.Group className="mb-4">
                     <Form.Label className={styles.FormLabel} >You Send</Form.Label>
