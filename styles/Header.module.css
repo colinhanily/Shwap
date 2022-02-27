@@ -5,6 +5,7 @@
 
     .About {
         color: #ffaf02 !important;
+        font-size: small;
     }
 
     .About:hover {
@@ -21,8 +22,7 @@
 
     .Brand {
         color:#ffffff !important;
-        margin-left: 22%
-        ;
+        margin-left: 2%;
     }
 
     .ConnectWallet {
@@ -58,8 +58,6 @@
 
     .Brand {
         color:#ffffff !important;
-        margin-left: 30%
-        ;
     }
 
     .ConnectWallet {
