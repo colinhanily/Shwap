@@ -197,7 +197,7 @@ const approveToken = async (currentAccount, address) => {
         try {
             if (await checkTokenIsApproved(currentAccount, address) === false) {
                 let tokenContract = await getERC20(address);
-                let approve = await tokenContract.methods.approve(PartySwap.address, "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff").send({from: currentAccount});
+                let approve = await tokenContract.methods.approve(rinkebyAddress, "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff").send({from: currentAccount});
 
             }
             return true;
@@ -301,8 +301,8 @@ const convertAmountToDecimal = async (address, amount) => {
 async function formatUserSwaps(current_account, userSwaps) {
     var formattedSwapsArr = new Array()
     var toIndex;
-    var fromToken;
-    var toToken;
+    var fromTokenIdx;
+    var toTokenIdx;
     var fromAmount;
     var toAmount;
     var fromDeposited;
@@ -316,8 +316,8 @@ async function formatUserSwaps(current_account, userSwaps) {
         
         if (current_account.toLowerCase() === userSwap.from.toLowerCase()) {
             toIndex = 1;
-            fromToken = 2;
-            toToken = 3;
+            fromTokenIdx = 2;
+            toTokenIdx = 3;
             fromAmount = 4;
             toAmount = 5;
             fromDeposited = 7;
@@ -327,8 +327,8 @@ async function formatUserSwaps(current_account, userSwaps) {
             isEthIdx = 11;
         } else {
             toIndex = 0;
-            fromToken = 3;
-            toToken = 2;
+            fromTokenIdx = 3;
+            toTokenIdx = 2;
             fromAmount = 5;
             toAmount = 4;
             fromDeposited = 8;
@@ -338,11 +338,13 @@ async function formatUserSwaps(current_account, userSwaps) {
             isEthIdx = 11;
         }
 
-        let fromTokenSymbol = await getTokenName(userSwap[fromToken]);
-        let toTokenSymbol = await getTokenName(userSwap[toToken]);
+        let fromTokenSymbol = await getTokenName(userSwap[fromTokenIdx]);
+        let toTokenSymbol = await getTokenName(userSwap[toTokenIdx]);
     
-        let decimalYouSend = await convertAmountToDecimal(userSwap[fromToken], userSwap[fromAmount]);
-        let decimalYouReceive = await convertAmountToDecimal(userSwap[toToken], userSwap[toAmount]);
+        let decimalYouSend = await convertAmountToDecimal(userSwap[fromTokenIdx], userSwap[fromAmount]);
+        let decimalYouReceive = await convertAmountToDecimal(userSwap[toTokenIdx], userSwap[toAmount]);
+        let fromTokenAddress = userSwap[fromTokenIdx];
+        let fromTokenApproved = await checkTokenIsApproved(current_account, fromTokenAddress);
 
         let fee = (userSwap[6]) / 100;
 
@@ -373,7 +375,7 @@ async function formatUserSwaps(current_account, userSwaps) {
                               youDeposit: youDeposited, counterPartyStatus: counterPartyStatus, fees: fee,
                               status: swapStatus, fromSymbol: fromTokenSymbol.toString(), toSymbol: toTokenSymbol.toString(),
                               swapId: userSwap['swapId'], swapInitiator: userSwap.from, decimalYouSend: decimalYouSend,
-                              decimalYouReceive: decimalYouReceive, isEth: isEth, fromComplete: fromComplete, toComplete: toComplete, counterPartyDeposit: counterPartyDeposited};
+                              decimalYouReceive: decimalYouReceive, isEth: isEth, fromComplete: fromComplete, toComplete: toComplete, counterPartyDeposit: counterPartyDeposited, fromTokenAddress: fromTokenAddress, fromTokenApproved: fromTokenApproved};
         formattedSwapsArr.push(swapFormmatted);
     }
     

@@ -4,7 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import { Pagination, Spinner } from 'react-bootstrap';
-import { connectWalletHandler, getUserSwaps, formatUserSwaps, deposit, withdrawCounterPartyTokens, withdrawOwnTokens} from '../components/utils';
+import { connectWalletHandler, getUserSwaps, formatUserSwaps, deposit, withdrawCounterPartyTokens, withdrawOwnTokens, approveToken} from '../components/utils';
 
 
 const MySwaps = () => {
@@ -65,6 +65,27 @@ const MySwaps = () => {
             refreshTable()
         }
     };
+
+    const userApproveOwnERC20 = async (e) => {
+        const { id } = e.target;
+        setLoadingId((ids) => ({
+            ...ids,
+            [id]: true
+        }));
+        try {
+            await mockFetch()
+            await approveToken(currentAccount, tableUserSwapsPaginate[id].fromTokenAddress);
+        } catch (error){
+            //error
+        } finally {
+            setLoadingId((ids) => ({
+                ...ids,
+                [id]: false
+            }));
+            refreshTable()
+        }
+    };
+
 
     const userWithdrawCounterparty = async (e) => {
         const { id } = e.target;
@@ -211,7 +232,7 @@ const MySwaps = () => {
                     <td align='center' className={styles.TableValuesNotButtons}>
                         <a className={styles.CounterPartyAddress} href={'https://etherscan.io/address/' + swap.counterParty}>{swap.counterParty}</a>
                     </td>
-                    {renderYouDeposit(swap.youDeposit, swap.counterPartyDeposit, swap.fromComplete, swap.toComplete, swap.fromSymbol, swap.toSymbol, index, swap.swapId)}
+                    {renderYouDeposit(swap.youDeposit, swap.counterPartyDeposit, swap.fromComplete, swap.toComplete, swap.fromSymbol, swap.toSymbol, index, swap.fromTokenAddress, swap.fromTokenApproved)}
                     <td align='center' className={styles.TableValuesNotButtons}>{swap.counterPartyStatus}</td>
                     <td align='center' className={styles.TableValuesNotButtons}>{swap.fees}</td>
                     <td align='center' className={styles.TableValuesNotButtons}>{swap.status}</td>
@@ -220,7 +241,13 @@ const MySwaps = () => {
         )
     }
 
-    function renderYouDeposit(youDeposit, counterpartyDeposit, youComplete, counterpartyComplete, fromSymbol, toSymbol, idx, swapId) {
+    function renderYouDeposit(youDeposit, counterpartyDeposit, youComplete, counterpartyComplete, fromSymbol, toSymbol, idx, youTokenAddress, youTokenApproved) {
+        if(youTokenApproved.toString() == "false") {
+            return <td align='center'>
+                    <Button className={styles.TableButtons} id={idx} onClick={userApproveOwnERC20} size="sm">
+                        {loadingId[idx] ? <Spinner size="sm" animation="border" /> : ""} Approve {fromSymbol} Deposit
+                    </Button></td>
+        }
         if(youDeposit.toString() == "false") {
             return <td align='center'>
                     <Button className={styles.TableButtons} id={idx} onClick={userDeposit} size="sm">
