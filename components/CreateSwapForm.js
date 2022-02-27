@@ -305,8 +305,8 @@ const CustomMenu = React.forwardRef(
 
     return (
         <Container className={styles.FormContainer}>
-            { totalSwaps > 0 && <h1 className={styles.CounterLabel}>Total Number of Swaps</h1> }
-            { totalSwaps > 0 && <h2 className={styles.CounterValue}>{totalSwaps}</h2> }
+            { totalSwaps != 0 && <h1 className={styles.CounterLabel}>Total Number of Swaps</h1> }
+            { totalSwaps != 0 && <h2 className={styles.CounterValue}>{totalSwaps}</h2> }
             <Form>
                 <Form.Group className="mb-4">
                     <Form.Label className={styles.FormLabel} >You Send</Form.Label>
@@ -316,7 +316,7 @@ const CustomMenu = React.forwardRef(
                                 <Form.Control placeholder="Token Address..." value={fromToken}  onChange={e => checkFromToken(e.target.value)} />
                                 <Dropdown>
                                     <Dropdown.Toggle id="dropdownFromToken"className={fromTokenCorrect === false ? styles.DropdownButton : (fromTokenCorrect === "success" ? styles.DropdownButtonSuccess : styles.DropdownButtonDanger)}>
-                                    { fromTokenImage != false &&   <img width="30" height="30" className={styles.TokenImage} src={fromTokenImage}></img> }
+                                    { fromTokenImage != false &&   <img width="30" height="30" priority={true} className={styles.TokenImage} src={fromTokenImage}></img> }
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu className={styles.DropDownMenu} as={CustomMenu}>
                                         {tokens.map((tokens, key) => (
