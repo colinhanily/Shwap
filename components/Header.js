@@ -69,7 +69,7 @@ const Header = () => {
                         PartySwap is a decentralised protocol for trustless peer to peer ERC20 token swaps.
                         <br/>
                         <br/>
-                        It was created after seeing a twitter user swap large amounts of tokens and trusting that the counterparty would not run off with their tokens (which they luckily didn't).
+                        It was created after seeing a twitter user swap large amounts of tokens and trusting that the counterparty would not run off with them (which they luckily didn't).
                         <br/>
                         <br/>
                         Simple peer to peer swapping functionality is a fundamental feature made possible by the EVM
