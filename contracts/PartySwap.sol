@@ -31,12 +31,9 @@ contract PartySwap {
     uint256 public current_swap_id;
     uint256 public current_fee = 75; //75bps
     address payable public admin;
-    mapping(address => uint) public token_fees_accrued;
+    uint256 constant CONVERT_TO_BPS_DENOMINATOR = 10000;
     uint256 public eth_fees_accrued;
-
-    event swapCreated(address indexed from, address indexed to, uint current_swap_id);
-    event fromHasWithdrawnToTokens(address tokenAddress, uint amount);
-    event toHasWithdrawnFromTokens(address tokenAddress, uint amount);
+    mapping(address => uint) public token_fees_accrued;
 
     constructor() {
         admin = payable(msg.sender);
@@ -66,13 +63,12 @@ contract PartySwap {
                 require(msg.value == swaps_list[current_swap_id].from_amount);
             } else {
                 Token token = Token(swaps_list[current_swap_id].from_token);
-                token.transferFrom(msg.sender, address(this), swaps_list[current_swap_id].from_amount);       
+                uint256 tokenBalance = token.balanceOf((address(this)));
+                token.transferFrom(msg.sender, address(this), swaps_list[current_swap_id].from_amount);
+                require(token.balanceOf(address(this)) - tokenBalance == swaps_list[current_swap_id].from_amount, "Tokens with transfer tax not supported");
             }
                 swaps_list[current_swap_id].from_deposited = true;     
         }
-
-        emit swapCreated(from, to, current_swap_id);
-
         current_swap_id += 1;
     }
 
@@ -84,7 +80,9 @@ contract PartySwap {
             require(msg.value == swaps_list[swap_id].from_amount, "Incorrect Amount");
         } else {
             Token token = Token(swaps_list[swap_id].from_token);
-            token.transferFrom(msg.sender, address(this), swaps_list[swap_id].from_amount);       
+            uint256 tokenBalance = token.balanceOf((address(this)));
+            token.transferFrom(msg.sender, address(this), swaps_list[swap_id].from_amount);    
+            require(token.balanceOf(address(this)) - tokenBalance == swaps_list[current_swap_id].from_amount, "Tokens with transfer tax not supported");   
         }
         swaps_list[swap_id].from_deposited = true;     
     }
@@ -97,7 +95,9 @@ contract PartySwap {
             require(msg.value == swaps_list[swap_id].to_amount, "Incorrect Amount");
         } else {
             Token token = Token(swaps_list[swap_id].to_token);
+            uint256 tokenBalance = token.balanceOf((address(this)));
             token.transferFrom(msg.sender, address(this), swaps_list[swap_id].to_amount);         
+            require(token.balanceOf(address(this)) - tokenBalance == swaps_list[current_swap_id].to_amount, "Tokens with transfer tax not supported");   
         }
         swaps_list[swap_id].to_deposited = true;   
     }
@@ -112,7 +112,6 @@ contract PartySwap {
         } else {
             Token token = Token(swaps_list[swap_id].from_token);
             token.transfer(msg.sender, swaps_list[swap_id].from_amount);
-
         }
         swaps_list[swap_id].from_deposited = false;
     }
@@ -128,7 +127,6 @@ contract PartySwap {
             Token token = Token(swaps_list[swap_id].to_token);
             token.transfer(msg.sender, swaps_list[swap_id].to_amount);
         }
-
         swaps_list[swap_id].to_deposited = false;
     }
 
@@ -138,7 +136,7 @@ contract PartySwap {
         require(swaps_list[swap_id].from_deposited == true, "You must first deposit your tokens before withdrawing counterparties");
         require(swaps_list[swap_id].to_deposited == true, "Counterparty has not deposited tokens yet");
 
-        uint to_token_fee = swaps_list[swap_id].to_amount * swaps_list[swap_id].fee_percent_each / 10000;
+        uint to_token_fee = swaps_list[swap_id].to_amount * swaps_list[swap_id].fee_percent_each / CONVERT_TO_BPS_DENOMINATOR;
 
         if (swaps_list[swap_id].is_eth == uint256(token_type.from_eth)) {
             Token token = Token(swaps_list[swap_id].to_token);
@@ -150,8 +148,6 @@ contract PartySwap {
         }
 
         swaps_list[swap_id].from_complete = true;
-
-        emit fromHasWithdrawnToTokens(swaps_list[swap_id].to_token, swaps_list[swap_id].to_amount);
     }
 
     function to_withdraw_from_tokens(uint swap_id) external {
@@ -160,7 +156,7 @@ contract PartySwap {
         require(swaps_list[swap_id].to_deposited == true, "You must first deposit your tokens before withdrawing counterparties");
         require(swaps_list[swap_id].from_deposited == true, "Counterparty has not deposited tokens yet");
 
-        uint from_token_fee = swaps_list[swap_id].from_amount * swaps_list[swap_id].fee_percent_each / 10000;
+        uint from_token_fee = swaps_list[swap_id].from_amount * swaps_list[swap_id].fee_percent_each / CONVERT_TO_BPS_DENOMINATOR;
   
         if (swaps_list[swap_id].is_eth == uint256(token_type.to_eth)) {
             Token token = Token(swaps_list[swap_id].from_token);
@@ -172,8 +168,6 @@ contract PartySwap {
         }
 
         swaps_list[swap_id].to_complete = true;
-
-        emit toHasWithdrawnFromTokens(swaps_list[swap_id].from_token, swaps_list[swap_id].from_amount );
     }
 
     function switch_admin_address(address payable new_admin) external {
