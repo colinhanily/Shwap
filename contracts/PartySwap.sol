@@ -35,6 +35,8 @@ contract PartySwap {
     uint256 public eth_fees_accrued;
     mapping(address => uint) public token_fees_accrued;
 
+    event swapCreated(address indexed from, address indexed to, uint current_swap_id);
+
     constructor() {
         admin = payable(msg.sender);
     }
@@ -69,6 +71,8 @@ contract PartySwap {
             }
                 swaps_list[current_swap_id].from_deposited = true;     
         }
+        emit swapCreated(from, to, current_swap_id);
+
         current_swap_id += 1;
     }
 

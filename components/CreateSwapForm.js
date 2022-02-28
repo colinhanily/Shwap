@@ -84,6 +84,7 @@ const CreateSwapForm = () => {
                     isFromTokenCorrect("success")
                 }
                 approved = await (checkTokenIsApproved(currentAccount, tokenAddress));
+                console.log(approved)
                 if (approved === true ) {
                     setApproveButton(true);
                     isApproved(true);
@@ -197,6 +198,7 @@ const CreateSwapForm = () => {
             setApproveButtonLoading(false)   
             isApproved(true)
         } else {
+            setApproveButtonLoading(false)
             isApproved(false)
         }
 
@@ -305,8 +307,8 @@ const CustomMenu = React.forwardRef(
 
     return (
         <Container className={styles.FormContainer}>
-            { totalSwaps != 0 && <h1 className={styles.CounterLabel}>Total Number of Swaps</h1> }
-            { totalSwaps != 0 && <h2 className={styles.CounterValue}>{totalSwaps}</h2> }
+            { totalSwaps > 0 && <h1 className={styles.CounterLabel}>Total Number of Swaps</h1> }
+            { totalSwaps > 0 && <h2 className={styles.CounterValue}>{totalSwaps}</h2> }
             <Form>
                 <Form.Group className="mb-4">
                     <Form.Label className={styles.FormLabel} >You Send</Form.Label>
