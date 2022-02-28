@@ -20,7 +20,7 @@ describe("Dummy Token", async function () {
     var dai = await Dai.deploy();
     await dai.deployed();
 
-    var PartySwap = await ethers.getContractFactory("ParytSwap");
+    var PartySwap = await ethers.getContractFactory("PartySwap");
     var partySwap = await PartySwap.deploy();
     await partySwap.deployed();
 
@@ -33,18 +33,18 @@ describe("Dummy Token", async function () {
 
     const from_Dai_Approve_Contract = await dai.connect(from).approve(partySwap.address, 1000000)
 
-    const createSwap = await partySwap.connect(from).createSwap(from.address, to.address, dai.address, "0x0000000000000000000000000000000000000000", 1000000, 1000000, 2, true)
+    const createSwap = await partySwap.connect(from).createSwap(from.address, to.address, dai.address, "0x0000000000000000000000000000000000000000", 1000000, 1000000, 2, false)
     createSwap.wait(); 
 
     var first_swap_struct = await partySwap.swaps_id_details_getter(0);
     expect(first_swap_struct).to.exist;
 
     ////////from deposit
-    //var from_deposit = await partySwap.connect(from).from_deposit(0)
-    //from_deposit.wait();
-    //first_swap_struct = await partySwap.swaps_id_details_getter(0);
-    //console.log(first_swap_struct);
-    //expect(first_swap_struct[19]).to.equal("true");
+    var from_deposit = await partySwap.connect(from).from_deposit(0)
+    from_deposit.wait();
+    first_swap_struct = await partySwap.swaps_id_details_getter(0);
+    console.log(first_swap_struct);
+
 
     //////////to deposit
     var to_options = { value: "1000000" };

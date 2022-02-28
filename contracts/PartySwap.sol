@@ -17,8 +17,8 @@ contract PartySwap {
         address payable to;
         address from_token;
         address to_token;
-        uint from_amount;
-        uint to_amount;
+        uint256 from_amount;
+        uint256 to_amount;
         uint256 fee_percent_each;
         bool from_deposited;
         bool to_deposited;
@@ -86,7 +86,7 @@ contract PartySwap {
             Token token = Token(swaps_list[swap_id].from_token);
             uint256 tokenBalance = token.balanceOf((address(this)));
             token.transferFrom(msg.sender, address(this), swaps_list[swap_id].from_amount);    
-            require(token.balanceOf(address(this)) - tokenBalance == swaps_list[current_swap_id].from_amount, "Tokens with transfer tax not supported");   
+            require(token.balanceOf(address(this)) - tokenBalance == swaps_list[swap_id].from_amount, "Tokens with transfer tax not supported");   
         }
         swaps_list[swap_id].from_deposited = true;     
     }
@@ -101,7 +101,7 @@ contract PartySwap {
             Token token = Token(swaps_list[swap_id].to_token);
             uint256 tokenBalance = token.balanceOf((address(this)));
             token.transferFrom(msg.sender, address(this), swaps_list[swap_id].to_amount);         
-            require(token.balanceOf(address(this)) - tokenBalance == swaps_list[current_swap_id].to_amount, "Tokens with transfer tax not supported");   
+            require(token.balanceOf(address(this)) - tokenBalance == swaps_list[swap_id].to_amount, "Tokens with transfer tax not supported");   
         }
         swaps_list[swap_id].to_deposited = true;   
     }
