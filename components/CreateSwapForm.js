@@ -191,6 +191,7 @@ const CreateSwapForm = () => {
     const approval = async () => {
 
         setApproveButtonLoading(true)
+        setApproveButton(true);
         const approval = await approveToken(currentAccount, fromTokenAddress);
          
         if (approval == true) {
@@ -199,6 +200,7 @@ const CreateSwapForm = () => {
             isApproved(true)
         } else {
             setApproveButtonLoading(false)
+            setApproveButton(false);
             isApproved(false)
         }
 
@@ -213,12 +215,14 @@ const CreateSwapForm = () => {
         else if (toTokenAddress == '0x0000000000000000000000000000000000000000')
             isEth = 2
         
+        setCreateSwap(true);
         setCreateButtonLoading(true)
         let created = await createSwap(currentAccount, counterPartyAddress, fromTokenAddress, toTokenAddress, fromAmount, toAmount, isEth, sendOnCreate);
         if (created == true) {
             window.location.reload(true);
         } else if (created == false) {
             setCreateButtonLoading(false)
+            setCreateSwap(false);
         }
     }
 

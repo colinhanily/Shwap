@@ -18,12 +18,6 @@ const MySwaps = () => {
     const [withdrawOwnloading, setWithdrawOwnLoading] = useState(false);
     const [withdrawCounterPartyLoading, setWithdrawCounterPartyLoading] = useState(false);
 
-
-    const mockFetch = () =>
-        new Promise((resolve) => {
-        setTimeout(() => resolve(), 3000);
-    });
-
     const userDeposit = async (e) => {
         const { id } = e.target;
         setLoadingId((ids) => ({
@@ -31,7 +25,6 @@ const MySwaps = () => {
             [id]: true
         }));
         try {
-            await mockFetch()
             await deposit(currentAccount, tableUserSwapsPaginate[id]);
         } catch (error){
             //ignore
@@ -52,7 +45,6 @@ const MySwaps = () => {
             [id]: true
         }));
         try {
-            await mockFetch()
             await withdrawOwnTokens(currentAccount, tableUserSwapsPaginate[id]);
         } catch (error){
             //error
@@ -73,7 +65,6 @@ const MySwaps = () => {
             [id]: true
         }));
         try {
-            await mockFetch()
             await approveToken(currentAccount, tableUserSwapsPaginate[id].fromTokenAddress);
         } catch (error){
             //error
@@ -95,7 +86,6 @@ const MySwaps = () => {
             [id]: true
         }));
         try {
-            await mockFetch()
             await withdrawCounterPartyTokens(currentAccount, tableUserSwapsPaginate[id]);
         } catch (error){
             //error
