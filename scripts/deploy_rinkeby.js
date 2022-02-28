@@ -9,12 +9,6 @@ async function main() {
     console.log("ACCOUNT: ", deployer.address)
 
     // We get the contract to deploy
-    const Dai = await ethers.getContractFactory("Dai");
-    const dai = await Dai.deploy();
-    //const dai = await Dai.attach(dai_address)
-    console.log("Dai:", dai.address);
-    const mint = await dai.faucet(deployer.address, ethers.utils.parseEther("100000000"));
-
     const PartySwap = await ethers.getContractFactory("PartySwap");
     const partySwap = await PartySwap.deploy();
 //    const allow = await dai.connect(signer).approve(partySwap.address, ethers.utils.parseEther("900000"))
