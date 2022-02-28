@@ -215,11 +215,8 @@ const checkTokenIsApproved = async (currentAccount, fromToken) => {
             if (fromToken == "0x0000000000000000000000000000000000000000")
                 return true
             let tokenContract = await getERC20(fromToken);
-            let isApproved = await tokenContract.methods.allowance(currentAccount, PartySwap.address).call();
+            let isApproved = await tokenContract.methods.allowance(currentAccount, rinkebyAddress).call();
 
-            console.log("isApproved")
-            console.log(isApproved)
-    
             if (isApproved > 100000)
                 return true;
             return false;
