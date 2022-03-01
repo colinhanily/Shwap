@@ -37,7 +37,7 @@ const CreateSwapForm = () => {
     const [totalSwaps, setTotalSwaps] = useState(undefined);
 
     const enableCreateSwap = async (_fromTokenAddress, _toTokenAddress, _validFromToken, _validToToken, _fromAmount,
-                                    _toAmount, _counterPartyAddress, _tokenApproved) => {
+                                    _toAmount, _counterPartyAddress) => {
         if (_validFromToken == false    ||
             _validToToken == false      ||
             _fromAmount == ' '          ||
@@ -45,7 +45,6 @@ const CreateSwapForm = () => {
             _toAmount == ' '            ||
             _toAmount == 0              ||
             _counterPartyAddress == ' ' ||
-            _tokenApproved == false     ||
             _fromTokenAddress == _toTokenAddress) {
             //console.log(_validFromToken)
             //console.log(_validToToken)
@@ -54,7 +53,6 @@ const CreateSwapForm = () => {
             //console.log(_fromAmount)
             //console.log(_toAmount)
             //console.log(_counterPartyAddress)
-            //console.log(_tokenApproved)
             setCreateSwap(true)
         } else {
             setCreateSwap(false);
@@ -147,7 +145,7 @@ const CreateSwapForm = () => {
                 isToTokenCorrect("danger")
         }
 
-        enableCreateSwap(fromTokenAddress, tokenAddress, validFromToken, true, fromAmount, toAmount, counterPartyAddress, tokenApproved)
+        enableCreateSwap(fromTokenAddress, tokenAddress, validFromToken, true, fromAmount, toAmount, counterPartyAddress)
     }
 
     const checkCounterPartyAddress = async (address) => {
@@ -157,7 +155,7 @@ const CreateSwapForm = () => {
                 setCounterPartyAddress(false) 
             else {
                 setCounterPartyAddress(address);
-                enableCreateSwap(fromTokenAddress, toTokenAddress, validFromToken, validToToken, fromAmount, toAmount, address, tokenApproved)
+                enableCreateSwap(fromTokenAddress, toTokenAddress, validFromToken, validToToken, fromAmount, toAmount, address)
             }
         } else {
             setCounterPartyAddress(false);
@@ -173,7 +171,7 @@ const CreateSwapForm = () => {
             setFromAmount(amount);
         }
 
-        enableCreateSwap(fromTokenAddress, toTokenAddress, validFromToken, validToToken, amount, toAmount, counterPartyAddress, tokenApproved)
+        enableCreateSwap(fromTokenAddress, toTokenAddress, validFromToken, validToToken, amount, toAmount, counterPartyAddress)
     }
 
     const checkToAmount = (amount) => {
@@ -184,7 +182,7 @@ const CreateSwapForm = () => {
             setToAmount(amount);
         }
 
-        enableCreateSwap(fromTokenAddress, toTokenAddress, validFromToken, validToToken, fromAmount, amount, counterPartyAddress, tokenApproved)
+        enableCreateSwap(fromTokenAddress, toTokenAddress, validFromToken, validToToken, fromAmount, amount, counterPartyAddress)
     }
 
     const approval = async () => {
@@ -216,14 +214,6 @@ const CreateSwapForm = () => {
         
         setCreateSwap(true);
         setCreateButtonLoading(true)
-        console.log(currentAccount);
-        console.log(counterPartyAddress);
-        console.log(fromTokenAddress);
-        console.log(toTokenAddress);
-        console.log(fromAmount);
-        console.log(toAmount);
-        console.log(isEth);
-        console.log(sendOnCreate);
         
         let created = await createSwap(currentAccount, counterPartyAddress, fromTokenAddress, toTokenAddress, fromAmount, toAmount, isEth, sendOnCreate);
         if (created == true) {
@@ -273,7 +263,7 @@ const CreateSwapForm = () => {
         setToTokenImage(tokenImage);
         setValidToToken(true);
 
-        enableCreateSwap(fromTokenAddress, tokenAddress, validFromToken, true, fromAmount, toAmount, counterPartyAddress, tokenApproved)
+        enableCreateSwap(fromTokenAddress, tokenAddress, validFromToken, true, fromAmount, toAmount, counterPartyAddress)
     }
 
 // forwardRef again here!
