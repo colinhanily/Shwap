@@ -84,7 +84,6 @@ const CreateSwapForm = () => {
                     isFromTokenCorrect("success")
                 }
                 approved = await (checkTokenIsApproved(currentAccount, tokenAddress));
-                console.log(approved)
                 if (approved === true ) {
                     setApproveButton(true);
                     isApproved(true);
@@ -217,6 +216,15 @@ const CreateSwapForm = () => {
         
         setCreateSwap(true);
         setCreateButtonLoading(true)
+        console.log(currentAccount);
+        console.log(counterPartyAddress);
+        console.log(fromTokenAddress);
+        console.log(toTokenAddress);
+        console.log(fromAmount);
+        console.log(toAmount);
+        console.log(isEth);
+        console.log(sendOnCreate);
+        
         let created = await createSwap(currentAccount, counterPartyAddress, fromTokenAddress, toTokenAddress, fromAmount, toAmount, isEth, sendOnCreate);
         if (created == true) {
             window.location.reload(true);
