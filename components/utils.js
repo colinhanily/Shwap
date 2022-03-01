@@ -2,7 +2,7 @@ import Web3 from 'web3';
 import PartySwap from '../artifacts/contracts/PartySwap.sol/PartySwap.json';
 import ERC20 from '../artifacts/contracts/Dai.sol/Dai.json';
 
-const rinkebyAddress = "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707";
+const rinkebyAddress = "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0";
 
 const getWeb3 = async () => {
             if (window.ethereum) {
