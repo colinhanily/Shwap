@@ -84,6 +84,7 @@ const createSwap = async (currentAccount, counterPartyAddress, fromTokenAddress,
     sendOnCreate = +sendOnCreate;
 
     try {
+        console.log(currentAccount, counterPartyAddress, fromTokenAddress, toTokenAddress, fromAmount.toString(), toAmount.toString(), isEth, sendOnCreate);
         await partySwap.methods.createSwap(currentAccount, counterPartyAddress, fromTokenAddress, toTokenAddress, fromAmount.toString(), toAmount.toString(), isEth, sendOnCreate).send({from: currentAccount});
         return true
     } catch (e) {
