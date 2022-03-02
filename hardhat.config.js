@@ -1,3 +1,4 @@
+require("@nomiclabs/hardhat-etherscan");
 require("@nomiclabs/hardhat-waffle");
 require("hardhat-gas-reporter");
 
@@ -22,8 +23,8 @@ module.exports = {
 		hardhat: {
 		},
 		rinkeby: {
-			url: "INSERT INFURA ENDPOINT HERE",
-			accounts: ["INSERT PRIVATE KEY OF ACCOUNT TO DEPLOY FROM HERE"]
+			url: "https://rinkeby.infura.io/v3/INSERT_API_KEY_HERE",
+			accounts: ["INSERT_PRIVATE_KEY_HERE"]
 		}
 	},
 	solidity: {
@@ -38,6 +39,11 @@ module.exports = {
 	},
 	gasReporter: {
 		currency: 'EUR',
-		gasPrice: 21
-	}
+		gasPrice: 85
+	},
+	etherscan: {
+		// Your API key for Etherscan
+		// Obtain one at https://etherscan.io/
+		apiKey: "INSERT API KEY HERE"
+	  },
 };

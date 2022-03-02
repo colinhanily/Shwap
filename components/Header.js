@@ -63,7 +63,7 @@ const Header = () => {
                     keyboard={false}
                 >
                     <Modal.Header closeButton>
-                    <Modal.Title>About PartySwap</Modal.Title>
+                    <Modal.Title>About Shwap</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         PartySwap is a decentralised protocol for trustless peer to peer ERC20 token swaps.
@@ -72,7 +72,19 @@ const Header = () => {
                         It was created after seeing a twitter user swap large amounts of tokens and trusting that the counterparty would not run off with them (which they luckily didn't).
                         <br/>
                         <br/>
-                        Simple peer to peer swapping functionality is a fundamental feature made possible by the EVM
+                        Simple peer to peer swapping functionality is a fundamental feature made possible by the EVM.
+                        <br/>
+                        <br/>
+                        Use PartySwap at YOUR OWN RISK. The creator of PartySwap is not responsible for any hacks, exploits, or contract errors or frontend errors that may occur.
+                        <br/>
+                        <br/>
+                        The verified contract can be inspected before use <a href="https://rinkeby.etherscan.io/address/0x83b014b2d63CD4e8bEa44eB2B366f031Bbc0B701#code">here</a>.
+                        <br/>
+                        <br/>
+                        The projects entire code can be inspected <a href="https://github.com/colinhanily/partySwap">here</a>.
+                        <br/>
+                        <br/>
+                        Enjoy Shwapping!
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" onClick={handleCloseAbout}>
@@ -88,7 +100,7 @@ const Header = () => {
                     size="md"
                 >
                     <Modal.Header closeButton>
-                    <Modal.Title>How To Use PartySwap</Modal.Title>
+                    <Modal.Title>How To Use Shwap</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         1. Fill in the Swap details in the form provided.
@@ -107,6 +119,18 @@ const Header = () => {
                         <br/>
                         <br/>
                         6. Once you have withdrawn the counterparties tokens, you &nbsp;&nbsp;&nbsp;&nbsp;will lose access to your tokens to ensure the counterparty can &nbsp;&nbsp;&nbsp;&nbsp;safely withdraw your tokens.
+                        <br/>
+                        <br/>
+                        DISCLAIMER:
+                        <br/>
+                        <br/>
+                        The current fee per swap is 0.15%, split between the 2 parties.
+                        <br/>
+                        This fee is not withdrawn until you have completed your side of the swap.
+                        <br/>
+                        <br/>
+                        If you wish to back out of a swap before it is complete, no fees will be charged!
+
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" onClick={handleCloseHowTo}>
@@ -115,7 +139,7 @@ const Header = () => {
                     </Modal.Footer>
                 </Modal>
                 <Link href="/" passHref>
-                    <Navbar.Brand className={styles.Brand} href>PartySwap 💰</Navbar.Brand>
+                    <Navbar.Brand className={styles.Brand} href>Shwap 💰</Navbar.Brand>
                 </Link>
                 <Nav>
                     <div className='justify-content-end'>

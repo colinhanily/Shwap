@@ -347,7 +347,7 @@ async function formatUserSwaps(current_account, userSwaps) {
         let fromTokenAddress = userSwap[fromTokenIdx];
         let fromTokenApproved = await checkTokenIsApproved(current_account, fromTokenAddress);
 
-        let fee = (userSwap[6]) / 100;
+        let fee = (userSwap[6]) / 1000;
 
         let isEth = userSwap[isEthIdx];
         let youSend = decimalYouSend.concat(' ').concat(fromTokenSymbol);

@@ -1,4 +1,4 @@
-# PartySwap
+# Shwap
 Trustless OTC ERC20/Ethereum Swaps
 
 Prerequisites: Ethereum web wallet/Infura Endpoint for contract deployment

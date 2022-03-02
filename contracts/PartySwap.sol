@@ -1,9 +1,7 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
 
-import "hardhat/console.sol";
-import "./Token.sol";
-
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract PartySwap {
     enum token_type {
@@ -64,7 +62,7 @@ contract PartySwap {
             if (swaps_list[current_swap_id].is_eth == uint256(token_type.from_eth)) {
                 require(msg.value == swaps_list[current_swap_id].from_amount);
             } else {
-                Token token = Token(swaps_list[current_swap_id].from_token);
+                IERC20 token = IERC20(swaps_list[current_swap_id].from_token);
                 uint256 tokenBalance = token.balanceOf((address(this)));
                 token.transferFrom(msg.sender, address(this), swaps_list[current_swap_id].from_amount);
                 require(token.balanceOf(address(this)) - tokenBalance == swaps_list[current_swap_id].from_amount, "Tokens with transfer tax not supported");
@@ -83,7 +81,7 @@ contract PartySwap {
         if (swaps_list[swap_id].is_eth == uint256(token_type.from_eth)) {
             require(msg.value == swaps_list[swap_id].from_amount, "Incorrect Amount");
         } else {
-            Token token = Token(swaps_list[swap_id].from_token);
+            IERC20 token = IERC20(swaps_list[swap_id].from_token);
             uint256 tokenBalance = token.balanceOf((address(this)));
             token.transferFrom(msg.sender, address(this), swaps_list[swap_id].from_amount);    
             require(token.balanceOf(address(this)) - tokenBalance == swaps_list[swap_id].from_amount, "Tokens with transfer tax not supported");   
@@ -98,7 +96,7 @@ contract PartySwap {
         if (swaps_list[swap_id].is_eth == uint256(token_type.to_eth)) {
             require(msg.value == swaps_list[swap_id].to_amount, "Incorrect Amount");
         } else {
-            Token token = Token(swaps_list[swap_id].to_token);
+            IERC20 token = IERC20(swaps_list[swap_id].to_token);
             uint256 tokenBalance = token.balanceOf((address(this)));
             token.transferFrom(msg.sender, address(this), swaps_list[swap_id].to_amount);         
             require(token.balanceOf(address(this)) - tokenBalance == swaps_list[swap_id].to_amount, "Tokens with transfer tax not supported");   
@@ -114,7 +112,7 @@ contract PartySwap {
         if (swaps_list[swap_id].is_eth == uint256(token_type.from_eth)) {
             swaps_list[swap_id].from.transfer(swaps_list[swap_id].from_amount);
         } else {
-            Token token = Token(swaps_list[swap_id].from_token);
+            IERC20 token = IERC20(swaps_list[swap_id].from_token);
             token.transfer(msg.sender, swaps_list[swap_id].from_amount);
         }
         swaps_list[swap_id].from_deposited = false;
@@ -128,7 +126,7 @@ contract PartySwap {
         if (swaps_list[swap_id].is_eth == uint256(token_type.to_eth)) {
             swaps_list[swap_id].to.transfer(swaps_list[swap_id].to_amount);
         } else {
-            Token token = Token(swaps_list[swap_id].to_token);
+            IERC20 token = IERC20(swaps_list[swap_id].to_token);
             token.transfer(msg.sender, swaps_list[swap_id].to_amount);
         }
         swaps_list[swap_id].to_deposited = false;
@@ -143,7 +141,7 @@ contract PartySwap {
         uint to_token_fee = swaps_list[swap_id].to_amount * swaps_list[swap_id].fee_percent_each / CONVERT_TO_BPS_DENOMINATOR;
 
         if (swaps_list[swap_id].is_eth == uint256(token_type.from_eth)) {
-            Token token = Token(swaps_list[swap_id].to_token);
+            IERC20 token = IERC20(swaps_list[swap_id].to_token);
             token_fees_accrued[swaps_list[swap_id].to_token] += to_token_fee;
             token.transfer(msg.sender, swaps_list[swap_id].to_amount - to_token_fee);
         } else {
@@ -163,7 +161,7 @@ contract PartySwap {
         uint from_token_fee = swaps_list[swap_id].from_amount * swaps_list[swap_id].fee_percent_each / CONVERT_TO_BPS_DENOMINATOR;
   
         if (swaps_list[swap_id].is_eth == uint256(token_type.to_eth)) {
-            Token token = Token(swaps_list[swap_id].from_token);
+            IERC20 token = IERC20(swaps_list[swap_id].from_token);
             token_fees_accrued[swaps_list[swap_id].from_token] += from_token_fee;
             token.transfer(msg.sender, swaps_list[swap_id].from_amount - from_token_fee);            
         } else {
@@ -186,7 +184,7 @@ contract PartySwap {
             admin.transfer(eth_fees_accrued);
             eth_fees_accrued = 0;
         } else {
-            Token token = Token(token_address);
+            IERC20 token = IERC20(token_address);
             token.transfer(admin, token_fees_accrued[token_address]);
             token_fees_accrued[token_address] = 0;
         }
