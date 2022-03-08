@@ -1,5 +1,5 @@
 import Web3 from 'web3';
-import PartySwap from '../artifacts/contracts/PartySwap.sol/PartySwap.json';
+import Shwap from '../artifacts/contracts/Shwap.sol/Shwap.json';
 import ERC20 from '../artifacts/contracts/Dai.sol/Dai.json';
 
 const rinkebyAddress = "0x83b014b2d63CD4e8bEa44eB2B366f031Bbc0B701";
@@ -18,11 +18,11 @@ const getWeb3 = async () => {
             }
 };
 
-const getPartySwap = async () => {
+const getShwap = async () => {
     const web3 = new Web3(await getWeb3());
     try {
         let contract =  new web3.eth.Contract(
-            PartySwap.abi, rinkebyAddress
+            Shwap.abi, rinkebyAddress
         )
         return contract;
     } catch (e) {
@@ -43,8 +43,8 @@ const checkIfTokenIsEth = (address) => {
 
 const getTotalSwaps = async () => {
     try {
-        let partySwap = await getPartySwap();
-        let swapNumber = await partySwap.methods.current_swap_id().call();
+        let shwap = await getShwap();
+        let swapNumber = await shwap.methods.current_swap_id().call();
         return swapNumber
     } catch (e) {
         console.log(e);
@@ -53,7 +53,7 @@ const getTotalSwaps = async () => {
 }
 
 const createSwap = async (currentAccount, counterPartyAddress, fromTokenAddress, toTokenAddress, fromAmount, toAmount, isEth, sendOnCreate) => {
-    const partySwap = await getPartySwap();
+    const shwap = await getShwap();
     var decimals;
 
     if (isEth == 0 || isEth == 1) {
@@ -85,7 +85,7 @@ const createSwap = async (currentAccount, counterPartyAddress, fromTokenAddress,
 
     try {
         console.log(currentAccount, counterPartyAddress, fromTokenAddress, toTokenAddress, fromAmount.toString(), toAmount.toString(), isEth, sendOnCreate);
-        await partySwap.methods.createSwap(currentAccount, counterPartyAddress, fromTokenAddress, toTokenAddress, fromAmount.toString(), toAmount.toString(), isEth, sendOnCreate).send({from: currentAccount});
+        await shwap.methods.createSwap(currentAccount, counterPartyAddress, fromTokenAddress, toTokenAddress, fromAmount.toString(), toAmount.toString(), isEth, sendOnCreate).send({from: currentAccount});
         return true
     } catch (e) {
         console.log(e)
@@ -95,23 +95,23 @@ const createSwap = async (currentAccount, counterPartyAddress, fromTokenAddress,
 
 const deposit = async (currentAccount, swapDetails) => {
     const web3 = await getWeb3();
-    const partySwap = await getPartySwap();
+    const shwap = await getShwap();
     let isEth = swapDetails.isEth;
 
     try {
         if (currentAccount.toLowerCase() == swapDetails.swapInitiator.toLowerCase()) {
             if (isEth == 1) {
-                await partySwap.methods.from_deposit(swapDetails.swapId).send({from: currentAccount,
+                await shwap.methods.from_deposit(swapDetails.swapId).send({from: currentAccount,
                                                                                value: Web3.utils.toWei(swapDetails.decimalYouSend)});
                 } else {
-                await partySwap.methods.from_deposit(swapDetails.swapId).send({from: currentAccount});
+                await shwap.methods.from_deposit(swapDetails.swapId).send({from: currentAccount});
                 }
         } else {
             if (isEth == 2) {
-                await partySwap.methods.to_deposit(swapDetails.swapId).send({from: currentAccount,
+                await shwap.methods.to_deposit(swapDetails.swapId).send({from: currentAccount,
                                                                              value: Web3.utils.toWei(swapDetails.decimalYouSend)});
             } else {
-                await partySwap.methods.to_deposit(swapDetails.swapId).send({from: currentAccount});
+                await shwap.methods.to_deposit(swapDetails.swapId).send({from: currentAccount});
             }
         }
     } catch (e) {
@@ -121,14 +121,14 @@ const deposit = async (currentAccount, swapDetails) => {
 }
 
 const withdrawOwnTokens = async (currentAccount, swapDetails) => {
-    const partySwap = await getPartySwap();
+    const shwap = await getShwap();
 
     try {
         if (currentAccount.toLowerCase() == swapDetails.swapInitiator.toLowerCase()) {
-            await partySwap.methods.from_withdraw_own_tokens(swapDetails.swapId).send({from: currentAccount});
+            await shwap.methods.from_withdraw_own_tokens(swapDetails.swapId).send({from: currentAccount});
             
         } else {
-            await partySwap.methods.to_withdraw_own_tokens(swapDetails.swapId).send({from: currentAccount});
+            await shwap.methods.to_withdraw_own_tokens(swapDetails.swapId).send({from: currentAccount});
         }
     } catch (e) {
         console.log(e)
@@ -137,13 +137,13 @@ const withdrawOwnTokens = async (currentAccount, swapDetails) => {
 }
 
 const withdrawCounterPartyTokens = async (currentAccount, swapDetails) => {
-    const partySwap = await getPartySwap();
+    const shwap = await getShwap();
 
     try {
         if (currentAccount.toLowerCase() == swapDetails.swapInitiator.toLowerCase()) {
-            await partySwap.methods.from_withdraw_to_tokens(swapDetails.swapId).send({from: currentAccount});
+            await shwap.methods.from_withdraw_to_tokens(swapDetails.swapId).send({from: currentAccount});
         } else {
-            await partySwap.methods.to_withdraw_from_tokens(swapDetails.swapId).send({from: currentAccount});
+            await shwap.methods.to_withdraw_from_tokens(swapDetails.swapId).send({from: currentAccount});
         }
     } catch (e) {
         console.log(e)
@@ -246,14 +246,14 @@ async function getUserSwaps(currentAccount) {
     }
 
     try {
-        let partySwap = await getPartySwap();
-        let userSwapsFrom = await partySwap.getPastEvents('swapCreated', {
+        let shwap = await getShwap();
+        let userSwapsFrom = await shwap.getPastEvents('swapCreated', {
             filter: {from: currentAccount},
             fromBlock: 0,
             ToBlock: 'latest'
         });
 
-        let userSwapsTo = await partySwap.getPastEvents('swapCreated', {
+        let userSwapsTo = await shwap.getPastEvents('swapCreated', {
             filter: {to: currentAccount},
             fromBlock: 0,
             ToBlock: 'latest'
@@ -261,7 +261,7 @@ async function getUserSwaps(currentAccount) {
 
         var swapsArray = [];
             for (let i = 0; i < userSwapsTo.length; i++) {
-                let swapData = await partySwap.methods.swaps_id_details_getter(userSwapsTo[i].returnValues.current_swap_id).call();
+                let swapData = await shwap.methods.swaps_id_details_getter(userSwapsTo[i].returnValues.current_swap_id).call();
                 let swapNumber = userSwapsTo[i].returnValues.current_swap_id;
                 let swap = {swapId : swapNumber};
                 Object.assign(swap, swapData);
@@ -269,7 +269,7 @@ async function getUserSwaps(currentAccount) {
             }
 
             for (let i = 0; i < userSwapsFrom.length; i++) {
-                let swapData = await partySwap.methods.swaps_id_details_getter(userSwapsFrom[i].returnValues.current_swap_id).call();
+                let swapData = await shwap.methods.swaps_id_details_getter(userSwapsFrom[i].returnValues.current_swap_id).call();
                 let swapNumber = userSwapsFrom[i].returnValues.current_swap_id;
                 let swap = {swapId : swapNumber};
                 Object.assign(swap, swapData);
@@ -432,6 +432,6 @@ const walletChanges = async () => {
     }
 }
 
-export { getWeb3, getPartySwap, connectWalletHandler, walletChanges, getERC20, isToken,
+export { getWeb3, getShwap, connectWalletHandler, walletChanges, getERC20, isToken,
          isValidAddress, createSwap, approveToken, checkTokenIsApproved, getUserSwaps,
          formatUserSwaps, checkIfTokenIsEth, deposit, withdrawCounterPartyTokens, withdrawOwnTokens, getTotalSwaps}

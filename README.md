@@ -15,4 +15,4 @@ Launch steps:
 
 5. Connect to frontend: goto http://localhost:3000
 
-![alt text](https://github.com/colinhanily/partySwap/blob/main/PartySwap.png)
+![alt text](https://github.com/colinhanily/partySwap/blob/main/Shwap.png)

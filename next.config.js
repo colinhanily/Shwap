@@ -1,5 +1,5 @@
 module.exports = {
   reactStrictMode: true,
-  basePath: '/partySwap',
-  assetPrefix: '/partySwap'
+  basePath: '/shwap',
+  assetPrefix: '/shwap'
 }

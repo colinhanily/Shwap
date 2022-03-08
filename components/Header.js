@@ -66,7 +66,7 @@ const Header = () => {
                     <Modal.Title>About Shwap</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        PartySwap is a decentralised protocol for trustless peer to peer ERC20 token swaps.
+                        Shwap is a decentralised protocol for trustless peer to peer ERC20 token swaps.
                         <br/>
                         <br/>
                         It was created after seeing a twitter user swap large amounts of tokens and trusting that the counterparty would not run off with them (which they luckily didn't).
@@ -75,13 +75,13 @@ const Header = () => {
                         Simple peer to peer swapping functionality is a fundamental feature made possible by the EVM.
                         <br/>
                         <br/>
-                        Use PartySwap at YOUR OWN RISK. The creator of PartySwap is not responsible for any hacks, exploits, or contract errors or frontend errors that may occur.
+                        Use Shwap at YOUR OWN RISK. The creator of Shwap is not responsible for any hacks, exploits, or contract errors or frontend errors that may occur.
                         <br/>
                         <br/>
                         The verified contract can be inspected before use <a href="https://rinkeby.etherscan.io/address/0x83b014b2d63CD4e8bEa44eB2B366f031Bbc0B701#code">here</a>.
                         <br/>
                         <br/>
-                        The projects entire code can be inspected <a href="https://github.com/colinhanily/partySwap">here</a>.
+                        The projects entire code can be inspected <a href="https://github.com/colinhanily/shwap">here</a>.
                         <br/>
                         <br/>
                         Enjoy Shwapping!

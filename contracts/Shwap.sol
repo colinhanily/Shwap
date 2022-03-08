@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract PartySwap {
+contract Shwap {
     enum token_type {
         no_eth,
         from_eth,

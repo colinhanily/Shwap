@@ -22,10 +22,10 @@ module.exports = {
 	networks: {
 		hardhat: {
 		},
-		rinkeby: {
-			url: "https://rinkeby.infura.io/v3/INSERT_API_KEY_HERE",
-			accounts: ["INSERT_PRIVATE_KEY_HERE"]
-		}
+		//rinkeby: {
+			//url: "https://rinkeby.infura.io/v3/INSERT_API_KEY_HERE",
+			//accounts: ["INSERT_PRIVATE_KEY_HERE"]
+		//}
 	},
 	solidity: {
 		compilers: [
