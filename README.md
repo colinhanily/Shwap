@@ -15,4 +15,6 @@ Launch steps:
 
 5. Connect to frontend: goto http://localhost:3000
 
+6. Alternatively, live Rinkeby Deployment available at https://colinhanily.github.io/Shwap
+
 ![alt text](https://github.com/colinhanily/partySwap/blob/main/Shwap.png)
